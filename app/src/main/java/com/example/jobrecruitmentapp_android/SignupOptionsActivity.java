@@ -25,13 +25,13 @@ public class SignupOptionsActivity extends AppCompatActivity {
     }
 
     void openEmailSignUpActivity(){
-        Intent intent = new Intent();
+        Intent intent = new Intent(this,EmailSignupActivity.class);
         startActivity(intent);
         finish();
     }
 
     void openEmailLoginActivity(){
-        Intent intent = new Intent();
+        Intent intent = new Intent(this, EmailSignupActivity.class);
         startActivity(intent);
         finish();
     }
