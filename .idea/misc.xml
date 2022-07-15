@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/fragment_job_list.xml" value="0.22" />
+        <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/fragment_job_list_list.xml" value="0.15104166666666666" />
+        <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/fragment_jobs.xml" value="0.184375" />
+        <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/item_job.xml" value="0.22" />
+        <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.15" />
         <entry key="..\:/Users/Nikhil Kumar/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/activity_signup_options.xml" value="0.1" />
         <entry key="..\:/Users/Nikhil Kumar/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/activity_splash.xml" value="0.1685185185185185" />
         <entry key="..\:/Users/Nikhil Kumar/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/activity_user_type.xml" value="0.18" />
