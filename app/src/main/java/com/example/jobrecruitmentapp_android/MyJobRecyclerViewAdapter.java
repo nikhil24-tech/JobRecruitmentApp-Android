@@ -3,24 +3,19 @@ package com.example.jobrecruitmentapp_android;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.jobrecruitmentapp_android.placeholder.PlaceholderContent.PlaceholderItem;
 import com.example.jobrecruitmentapp_android.databinding.ItemJobBinding;
-import com.example.jobrecruitmentapp_android.placeholder.PlaceholderContent;
-
 import java.util.List;
-/**
- * {@link RecyclerView.Adapter} that can display a {@link PlaceholderContent.PlaceholderItem}.
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class MyJobRecyclerViewAdapter extends RecyclerView.Adapter<MyJobRecyclerViewAdapter.ViewHolder> {
 
     private NavController navController;
-    private final List<PlaceholderContent.PlaceholderItem> mValues;
+    private final List<PlaceholderItem> mValues;
 
-    public MyJobRecyclerViewAdapter(NavController navController, List<PlaceholderContent.PlaceholderItem> items) {
+    public MyJobRecyclerViewAdapter(NavController navController, List<PlaceholderItem> items) {
         this.navController = navController;
         mValues = items;
     }
@@ -33,6 +28,7 @@ public class MyJobRecyclerViewAdapter extends RecyclerView.Adapter<MyJobRecycler
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
+
     }
 
     @Override
@@ -41,7 +37,7 @@ public class MyJobRecyclerViewAdapter extends RecyclerView.Adapter<MyJobRecycler
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public PlaceholderContent.PlaceholderItem mItem;
+        public PlaceholderItem mItem;
         public ItemJobBinding binding;
 
         public ViewHolder(ItemJobBinding binding) {
