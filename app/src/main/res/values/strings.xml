@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">jobRecruitmentApp-Android</string>
+    <string name="app_name">JobKart</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="large_text">
@@ -18,4 +18,5 @@
     <string name="title_saved">Saved</string>
     <string name="title_applied">Applied</string>
     <string name="title_profile">Profile</string>
+    <string name="client_id">427842989253-ltollm99oijifcpdhmuro75r26aip2f8.apps.googleusercontent.com</string>
 </resources>

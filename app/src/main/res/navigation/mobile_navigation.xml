@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.jobrecruitmentapp_android.JobListFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.JobListFragment"
         tools:layout="@layout/fragment_job_list" >
         <action
             android:id="@+id/action_navigation_home_to_jobDetailFragment"
@@ -16,26 +16,26 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.jobrecruitmentapp_android.JobSearchFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.JobSearchFragment"
         tools:layout="@layout/fragment_job_search" />
 
     <fragment
         android:id="@+id/navigation_applied"
-        android:name="com.example.jobrecruitmentapp_android.AppliedJobFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.AppliedJobFragment"
         tools:layout="@layout/fragment_applied_job" />
 
     <fragment
         android:id="@+id/navigation_saved"
-        android:name="com.example.jobrecruitmentapp_android.SavedJobFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.SavedJobFragment"
         tools:layout="@layout/fragment_saved_job" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.jobrecruitmentapp_android.ProfileFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.ProfileFragment"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/jobDetailFragment"
-        android:name="com.example.jobrecruitmentapp_android.JobDetailFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.JobDetailFragment"
         tools:layout="@layout/fragment_job_d_etail" />
 
 </navigation>

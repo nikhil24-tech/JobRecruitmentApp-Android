@@ -25,6 +25,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".AppliedJobFragment"
+        tools:context=".fragments.AppliedJobFragment"
         tools:listitem="@layout/item_applied_job" />
 </LinearLayout>

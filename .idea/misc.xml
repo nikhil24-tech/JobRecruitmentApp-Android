@@ -16,10 +16,11 @@
         <entry key="..\:/Users/DELL/OneDrive/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/fragment_profile_list.xml" value="0.1859375" />
         <entry key="..\:/Users/DELL/OneDrive/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/item_applied_job.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/DELL/OneDrive/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/mobile_navigation.xml" value="0.19010416666666666" />
+        <entry key="app/src/main/res/layout/layout_user_type.xml" value="0.2341485507246377" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
