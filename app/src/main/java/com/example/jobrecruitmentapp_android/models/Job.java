@@ -3,6 +3,7 @@ package com.example.jobrecruitmentapp_android.models;
 import com.google.firebase.firestore.DocumentId;
 
 public class Job {
+
     @DocumentId
     public String jobId;
     public String jobName;
