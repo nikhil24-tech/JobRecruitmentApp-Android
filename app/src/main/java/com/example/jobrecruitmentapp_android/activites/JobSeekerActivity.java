@@ -1,4 +1,4 @@
-package com.example.jobrecruitmentapp_android;
+package com.example.jobrecruitmentapp_android.activites;
 
 import android.os.Bundle;
 
@@ -8,6 +8,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.jobrecruitmentapp_android.R;
 import com.example.jobrecruitmentapp_android.databinding.ActivityJobSeekerBinding;
 
 public class JobSeekerActivity extends AppCompatActivity {

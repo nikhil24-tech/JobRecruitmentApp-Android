@@ -1,4 +1,4 @@
-package com.example.jobrecruitmentapp_android;
+package com.example.jobrecruitmentapp_android.activites;
 
 import androidx.appcompat.app.AppCompatActivity;
 

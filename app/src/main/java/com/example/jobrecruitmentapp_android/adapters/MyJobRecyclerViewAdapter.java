@@ -1,4 +1,4 @@
-package com.example.jobrecruitmentapp_android;
+package com.example.jobrecruitmentapp_android.adapters;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

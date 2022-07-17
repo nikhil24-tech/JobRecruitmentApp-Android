@@ -1,8 +1,10 @@
-package com.example.jobrecruitmentapp_android;
+package com.example.jobrecruitmentapp_android.activites;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.jobrecruitmentapp_android.R;
 
 public class MainActivity extends AppCompatActivity {
 

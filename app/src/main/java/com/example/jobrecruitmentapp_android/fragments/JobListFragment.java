@@ -1,38 +1,46 @@
-package com.example.jobrecruitmentapp_android;
+package com.example.jobrecruitmentapp_android.fragments;
+
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.jobrecruitmentapp_android.databinding.FragmentSavedJobBinding;
+import com.example.jobrecruitmentapp_android.adapters.MyJobRecyclerViewAdapter;
+import com.example.jobrecruitmentapp_android.databinding.FragmentJobListBinding;
 import com.example.jobrecruitmentapp_android.placeholder.PlaceholderContent;
 
-/**
- * A fragment representing a list of Items.
- */
-public class AppliedJobFragment extends Fragment {
+
+public class JobListFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
 
+    private FragmentJobListBinding binding;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public AppliedJobFragment() {
+    public JobListFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static AppliedJobFragment newInstance(int columnCount) {
-        AppliedJobFragment fragment = new AppliedJobFragment();
+    public static JobListFragment newInstance(int columnCount) {
+        JobListFragment fragment = new JobListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -51,9 +59,15 @@ public class AppliedJobFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentSavedJobBinding binding = FragmentSavedJobBinding.inflate(inflater, container, false);
+        binding = FragmentJobListBinding.inflate(inflater, container, false);
         binding.list.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
-        binding.list.setAdapter(new MyAppliedJobRecyclerViewAdapter(PlaceholderContent.ITEMS));
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        NavController navController = Navigation.findNavController(requireView());
+        binding.list.setAdapter(new MyJobRecyclerViewAdapter(navController, PlaceholderContent.ITEMS));
     }
 }
