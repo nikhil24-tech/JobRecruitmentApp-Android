@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
+    android:id="@+id/jobseeker_navigation"
     app:startDestination="@+id/navigation_home">
 
     <fragment
@@ -17,22 +17,35 @@
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.example.jobrecruitmentapp_android.fragments.JobSearchFragment"
-        tools:layout="@layout/fragment_job_search" />
+        tools:layout="@layout/fragment_job_search" >
+        <action
+            android:id="@+id/action_navigation_search_to_jobDetailFragment"
+            app:destination="@id/jobDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_applied"
-        android:name="com.example.jobrecruitmentapp_android.fragments.AppliedJobFragment"
-        tools:layout="@layout/fragment_applied_job" />
+        android:name="com.example.jobrecruitmentapp_android.fragments.AddJobFragment"
+        tools:layout="@layout/fragment_applied_job">
+        <action
+            android:id="@+id/action_navigation_apply_to_jobDetailFragment"
+            app:destination="@id/jobDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_saved"
         android:name="com.example.jobrecruitmentapp_android.fragments.SavedJobFragment"
-        tools:layout="@layout/fragment_saved_job" />
+        tools:layout="@layout/fragment_saved_job">
+        <action
+            android:id="@+id/action_navigation_saved_to_jobDetailFragment"
+            app:destination="@id/jobDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.jobrecruitmentapp_android.fragments.ProfileFragment"
         tools:layout="@layout/fragment_profile" />
+
     <fragment
         android:id="@+id/jobDetailFragment"
         android:name="com.example.jobrecruitmentapp_android.fragments.JobDetailFragment"

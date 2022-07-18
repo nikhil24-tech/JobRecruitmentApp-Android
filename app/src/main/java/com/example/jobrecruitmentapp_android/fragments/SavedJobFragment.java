@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.jobrecruitmentapp_android.adapters.MySavedJobRecyclerViewAdapter;
 import com.example.jobrecruitmentapp_android.databinding.FragmentSavedJobBinding;
 import com.example.jobrecruitmentapp_android.placeholder.PlaceholderContent;
 
