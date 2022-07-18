@@ -68,9 +68,9 @@ public class EmailLoginActivity extends AppCompatActivity {
                         if (user.userType == null || user.userType.equalsIgnoreCase("jobseeker")) {
                             destination = JobSeekerActivity.class;
                         } else if (user.userType.equalsIgnoreCase("employer")) {
-                            destination = JobSeekerActivity.class;
+                            destination = EmployerActivity.class;
                         } else if (user.userType.equalsIgnoreCase("admin")){
-                            destination = JobSeekerActivity.class;
+                            destination = AdminActivity.class;
                         } else {
                             destination = JobSeekerActivity.class;
                         }

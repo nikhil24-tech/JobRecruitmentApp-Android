@@ -38,9 +38,9 @@ public class SplashActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 User jkuser = task.getResult().toObject(User.class);
                                 if (jkuser != null && jkuser.userType != null && jkuser.userType.equalsIgnoreCase("employer")) {
-                                    destination = EmailSignupActivity.class;
+                                    destination = EmployerActivity.class;
                                 } else if (jkuser != null && jkuser.userType != null && jkuser.userType.equalsIgnoreCase("admin")) {
-                                    destination = EmailLoginActivity.class;
+                                    destination = AdminActivity.class;
                                 } else {
                                     destination = JobSeekerActivity.class;
                                 }
