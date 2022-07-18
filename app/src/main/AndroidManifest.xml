@@ -10,22 +10,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JobRecruitmentAppAndroid">
         <activity
-            android:name=".activites.EmailLoginActivity"
+            android:name=".activities.EmailLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activites.EmailSignupActivity"
+            android:name=".activities.EmailSignupActivity"
             android:exported="false" />
         <activity
-            android:name=".activites.SignupOptionsActivity"
+            android:name=".activities.SignupOptionsActivity"
             android:exported="false" />
         <activity
-            android:name=".activites.UserTypeActivity"
+            android:name=".activities.UserTypeActivity"
             android:exported="false" />
         <activity
-            android:name=".activites.MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".activites.SplashActivity"
+            android:name=".activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

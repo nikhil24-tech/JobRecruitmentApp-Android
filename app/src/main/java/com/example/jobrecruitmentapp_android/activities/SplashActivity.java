@@ -1,4 +1,4 @@
-package com.example.jobrecruitmentapp_android.activites;
+package com.example.jobrecruitmentapp_android.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.jobrecruitmentapp_android.databinding.ActivitySplashBinding;
 import com.example.jobrecruitmentapp_android.models.User;
-import com.example.jobrecruitmentapp_android.activites.JobSeekerActivity;
-import com.example.jobrecruitmentapp_android.activites.UserTypeActivity;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
