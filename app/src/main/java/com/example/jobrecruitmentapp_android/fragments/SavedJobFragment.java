@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.jobrecruitmentapp_android.databinding.FragmentSavedJobBinding;
-import com.example.jobrecruitmentapp_android.placeholder.PlaceholderContent;
 
 /**
  * A fragment representing a list of Items.
@@ -53,7 +52,7 @@ public class SavedJobFragment extends Fragment {
                              Bundle savedInstanceState) {
         FragmentSavedJobBinding binding = FragmentSavedJobBinding.inflate(inflater,container, false);
         binding.list.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
-        binding.list.setAdapter(new MySavedJobRecyclerViewAdapter(PlaceholderContent.ITEMS));
+//        binding.list.setAdapter(new MySavedJobRecyclerViewAdapter(PlaceholderContent.ITEMS));
     return binding.getRoot();
     }
 }

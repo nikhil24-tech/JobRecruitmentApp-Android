@@ -31,7 +31,7 @@ public class UserTypeActivity extends AppCompatActivity {
     }
 
     void openLogInMenu() {
-        Intent intent = new Intent(this, SignupOptionsActivity.class);
+        Intent intent = new Intent(this, EmailLoginActivity.class);
         startActivity(intent);
         finish();
     }

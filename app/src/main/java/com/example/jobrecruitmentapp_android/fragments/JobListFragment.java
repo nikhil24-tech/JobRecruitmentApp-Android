@@ -16,9 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.jobrecruitmentapp_android.adapters.MyJobRecyclerViewAdapter;
 import com.example.jobrecruitmentapp_android.databinding.FragmentJobListBinding;
-import com.example.jobrecruitmentapp_android.placeholder.PlaceholderContent;
 
 
 public class JobListFragment extends Fragment {
@@ -68,6 +66,6 @@ public class JobListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         NavController navController = Navigation.findNavController(requireView());
-        binding.list.setAdapter(new MyJobRecyclerViewAdapter(navController, PlaceholderContent.ITEMS));
+//        binding.list.setAdapter(new MyJobRecyclerViewAdapter(navController, PlaceholderContent.ITEMS));
     }
 }

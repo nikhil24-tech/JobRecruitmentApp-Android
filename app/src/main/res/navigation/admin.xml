@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/admin_navigation_candidates"
-        android:name="com.example.job_kart_app.fragments.CandidateFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.CandidateDetailsFragment"
         tools:layout="@layout/fragment_saved_job">
         <action
             android:id="@+id/admin_action_navigation_saved_to_candidateDetailFragment"
@@ -41,6 +41,12 @@
         android:id="@+id/adminJobDetailFragment"
         android:name="com.example.jobrecruitmentapp_android.fragments.JobDetailFragment"
         tools:layout="@layout/fragment_job_d_etail" />
+
+    <fragment
+        android:id="@+id/candidateDetailsFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.CandidateDetailsFragment"
+        tools:layout="@layout/fragment_candidate_details" />
+
 
 
 
