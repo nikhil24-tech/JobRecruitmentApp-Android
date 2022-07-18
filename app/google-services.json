@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "427842989253-8fndsp5dogl5n1pl5ss4he4nfoujecm0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.job_kart_app",
+            "certificate_hash": "295ba5aa12c8ae8c4ff7bf9812adea77432da651"
+          }
+        },
+        {
           "client_id": "427842989253-n65vc4ch9tqk7s9rbhloog9h5509qefn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -65,6 +73,30 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "427842989253-0qb83boi8vv6ojctlq76lgrqh044evmj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jobrecruitmentapp_android",
+            "certificate_hash": "92142282c43e31ce2ae01ee0b5232840a023ad8b"
+          }
+        },
+        {
+          "client_id": "427842989253-11l1r3umqc7j7lqgv30030mm33jk143g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jobrecruitmentapp_android",
+            "certificate_hash": "c1e92e7ba7c97dee5b205e73b4faeee47452f060"
+          }
+        },
+        {
+          "client_id": "427842989253-fid87ljm2psmmqkv7ntc2ttiuupjld7c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jobrecruitmentapp_android",
+            "certificate_hash": "295ba5aa12c8ae8c4ff7bf9812adea77432da651"
+          }
+        },
         {
           "client_id": "427842989253-ltollm99oijifcpdhmuro75r26aip2f8.apps.googleusercontent.com",
           "client_type": 3

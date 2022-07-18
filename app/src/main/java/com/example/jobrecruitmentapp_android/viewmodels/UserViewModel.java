@@ -8,6 +8,7 @@ import com.example.jobrecruitmentapp_android.models.Job;
 import com.example.jobrecruitmentapp_android.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,6 +65,16 @@ public class UserViewModel extends ViewModel {
                     if (task.isSuccessful()) {
                         latestJobs.setValue(task.getResult().toObjects(Job.class));
                     }
+                });
+
+        firestore
+                .collection("jobs")
+                .addSnapshotListener((documentSnapshots, exception) -> {
+                    List<Job> allJobs = new ArrayList<>();
+                    for (DocumentSnapshot document: documentSnapshots.getDocuments()) {
+                        allJobs.add(document.toObject(Job.class));
+                    }
+                    latestJobs.setValue(allJobs);
                 });
 
         firestore

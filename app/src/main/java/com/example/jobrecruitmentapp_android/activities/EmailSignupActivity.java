@@ -57,7 +57,7 @@ public class EmailSignupActivity extends AppCompatActivity {
         String phone = binding.phoneTextField.getEditText().getText().toString();
         String email = binding.emailTextField.getEditText().getText().toString();
 
-        Intent intent = new Intent();
+        Intent intent = new Intent(this, CreateProfileActivity.class);
         intent.putExtra("name", name);
         intent.putExtra("phone", phone);
         intent.putExtra("email", email);

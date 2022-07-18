@@ -82,7 +82,7 @@ public class SignupOptionsActivity extends AppCompatActivity {
     }
 
     void openCreateProfileActivity() {
-        Intent intent = new Intent();
+        Intent intent = new Intent(this, CreateProfileActivity.class);
         intent.putExtra("userType", getIntent().getStringExtra("userType"));
         startActivity(intent);
         finish();

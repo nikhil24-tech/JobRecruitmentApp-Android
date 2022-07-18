@@ -16,13 +16,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 
-
 public class CandidateRecyclerViewAdapter extends RecyclerView.Adapter<CandidateRecyclerViewAdapter.ViewHolder> {
 
     private final List<User> mValues;
     private final Consumer<User> onUserSelected;
     private final NavController navController;
-
 
     public CandidateRecyclerViewAdapter(NavController navController, Consumer<User> onUserSelected) {
         mValues = new ArrayList<>();

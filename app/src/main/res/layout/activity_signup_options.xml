@@ -10,17 +10,16 @@
     <Button
         android:id="@+id/signInWithGoogle"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="200dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@android:color/holo_red_dark"
         android:fontFamily="@font/inter"
         android:text="Sign in with Google"
+        app:layout_constraintBottom_toTopOf="@id/signInWithEmail"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_user_type" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/signInWithEmail"
@@ -28,22 +27,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="210dp"
+        android:layout_marginBottom="160dp"
         android:fontFamily="@font/inter"
         android:text="Sign in with email"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInWithGoogle" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/goToSignIn"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_marginTop="32dp"
-        android:text="Already have an account? Sign in"
         android:textAlignment="center"
+        android:text="Already have an account. Sign in instead?"
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         android:textColor="@color/purple_700"
         app:layout_constraintBottom_toBottomOf="parent"

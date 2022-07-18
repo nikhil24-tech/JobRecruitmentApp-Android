@@ -40,7 +40,7 @@
     <fragment
         android:id="@+id/adminJobDetailFragment"
         android:name="com.example.jobrecruitmentapp_android.fragments.JobDetailFragment"
-        tools:layout="@layout/fragment_job_d_etail" />
+        tools:layout="@layout/fragment_job_detail" />
 
     <fragment
         android:id="@+id/candidateDetailsFragment"

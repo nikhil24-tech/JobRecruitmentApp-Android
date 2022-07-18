@@ -9,7 +9,6 @@ import com.example.jobrecruitmentapp_android.databinding.ActivityUserTypeBinding
 
 public class UserTypeActivity extends AppCompatActivity {
 
-
     ActivityUserTypeBinding binding;
 
     @Override
@@ -19,19 +18,21 @@ public class UserTypeActivity extends AppCompatActivity {
         binding = ActivityUserTypeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.Admin.setOnClickListener(v -> openLogInMenu());
-        binding.Employer.setOnClickListener(v -> openSignInMenu());
-        binding.JobSeeker.setOnClickListener(v -> openSignInMenu());
+        binding.Admin.setOnClickListener(v -> openLogInMenu("Admin"));
+        binding.Employer.setOnClickListener(v -> openSignInMenu("Employer"));
+        binding.JobSeeker.setOnClickListener(v -> openSignInMenu("JobSeeker"));
     }
 
-    void openSignInMenu(){
+    void openSignInMenu(String userType){
         Intent intent = new Intent(this, SignupOptionsActivity.class);
+        intent.putExtra("userType", userType);
         startActivity(intent);
         finish();
     }
 
-    void openLogInMenu() {
+    void openLogInMenu(String userType) {
         Intent intent = new Intent(this, EmailLoginActivity.class);
+        intent.putExtra("userType", userType);
         startActivity(intent);
         finish();
     }
