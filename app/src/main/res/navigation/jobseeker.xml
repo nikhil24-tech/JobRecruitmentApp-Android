@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/navigation_applied"
-        android:name="com.example.jobrecruitmentapp_android.fragments.AddJobFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.AppliedJobFragment"
         tools:layout="@layout/fragment_applied_job">
         <action
             android:id="@+id/action_navigation_apply_to_jobDetailFragment"

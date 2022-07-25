@@ -5,8 +5,11 @@
       <map>
         <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.1" />
         <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/activity_email_signup.xml" value="0.14175724637681159" />
+        <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/activity_job_seeker.xml" value="0.184375" />
+        <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/activity_main.xml" value="0.1598731884057971" />
         <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/activity_signup_options.xml" value="0.14175724637681159" />
         <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/activity_user_type.xml" value="0.14175724637681159" />
+        <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/fragment_applied_job.xml" value="0.184375" />
         <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/fragment_job_list.xml" value="0.184375" />
         <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/item_job.xml" value="0.184375" />
         <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/menu/admin_bottom_nav_menu.xml" value="0.18333333333333332" />
