@@ -21,4 +21,5 @@ public class User {
     public String occupation;
     public List<String> savedJobs;
     public List<String> appliedJobs;
+    public boolean isBlocked = false;
 }

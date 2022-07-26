@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/admin_navigation_candidates"
-        android:name="com.example.jobrecruitmentapp_android.fragments.CandidateDetailsFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.CandidateFragment"
         tools:layout="@layout/fragment_saved_job">
         <action
             android:id="@+id/admin_action_navigation_saved_to_candidateDetailFragment"
