@@ -64,19 +64,24 @@ public class EmailLoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         User user = task.getResult().toObject(User.class);
-                        Class<?> destination;
-                        if (user.userType == null || user.userType.equalsIgnoreCase("jobseeker")) {
-                            destination = JobSeekerActivity.class;
-                        } else if (user.userType.equalsIgnoreCase("employer")) {
-                            destination = EmployerActivity.class;
-                        } else if (user.userType.equalsIgnoreCase("admin")){
-                            destination = AdminActivity.class;
+                        if (user != null && user.isBlocked) {
+                            Toast.makeText(this, "Cannot login. User is blocked!", Toast.LENGTH_LONG).show();
+                            FirebaseAuth.getInstance().signOut();
                         } else {
-                            destination = JobSeekerActivity.class;
+                            Class<?> destination;
+                            if (user.userType == null || user.userType.equalsIgnoreCase("jobseeker")) {
+                                destination = JobSeekerActivity.class;
+                            } else if (user.userType.equalsIgnoreCase("employer")) {
+                                destination = EmployerActivity.class;
+                            } else if (user.userType.equalsIgnoreCase("admin")) {
+                                destination = AdminActivity.class;
+                            } else {
+                                destination = JobSeekerActivity.class;
+                            }
+                            Intent intent = new Intent(this, destination);
+                            startActivity(intent);
+                            finish();
                         }
-                        Intent intent = new Intent(this, destination);
-                        startActivity(intent);
-                        finish();
                     } else {
                         Toast.makeText(this, "Unable to create profile", Toast.LENGTH_SHORT).show();
                         task.getException().printStackTrace();

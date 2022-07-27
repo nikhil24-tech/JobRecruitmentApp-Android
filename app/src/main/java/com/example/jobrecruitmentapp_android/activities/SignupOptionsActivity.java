@@ -3,11 +3,13 @@ package com.example.jobrecruitmentapp_android.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.jobrecruitmentapp_android.R;
 import com.example.jobrecruitmentapp_android.databinding.ActivitySignupOptionsBinding;
+import com.example.jobrecruitmentapp_android.models.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -17,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignupOptionsActivity extends AppCompatActivity {
 
@@ -67,9 +70,46 @@ public class SignupOptionsActivity extends AppCompatActivity {
                 .signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        openCreateProfileActivity();
+                        openMainActivity();
                     } else {
                         Log.w("UserDetails", "signInWithCredential:failure", task.getException());
+                    }
+                });
+    }
+
+    void openMainActivity() {
+        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore
+                .getInstance()
+                .collection("jk_users")
+                .document(id)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        User user = task.getResult().toObject(User.class);
+                        if (user == null) {
+                            openCreateProfileActivity();
+                        } else if (user.isBlocked) {
+                            Toast.makeText(this, "Cannot login. User is blocked!", Toast.LENGTH_LONG).show();
+                            FirebaseAuth.getInstance().signOut();
+                        } else {
+                            Class<?> destination;
+                            if (user.userType == null || user.userType.equalsIgnoreCase("jobseeker")) {
+                                destination = JobSeekerActivity.class;
+                            } else if (user.userType.equalsIgnoreCase("employer")) {
+                                destination = EmployerActivity.class;
+                            } else if (user.userType.equalsIgnoreCase("admin")) {
+                                destination = AdminActivity.class;
+                            } else {
+                                destination = JobSeekerActivity.class;
+                            }
+                            Intent intent = new Intent(this, destination);
+                            startActivity(intent);
+                            finish();
+                        }
+                    } else {
+                        Toast.makeText(this, "Unable to create profile", Toast.LENGTH_SHORT).show();
+                        task.getException().printStackTrace();
                     }
                 });
     }
