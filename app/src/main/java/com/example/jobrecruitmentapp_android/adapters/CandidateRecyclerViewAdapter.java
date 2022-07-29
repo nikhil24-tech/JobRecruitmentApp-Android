@@ -21,11 +21,24 @@ public class CandidateRecyclerViewAdapter extends RecyclerView.Adapter<Candidate
     private final List<User> mValues;
     private final Consumer<User> onUserSelected;
     private final NavController navController;
+    private final CandidateRecyclerViewAdapter.Mode mode;
 
-    public CandidateRecyclerViewAdapter(NavController navController, Consumer<User> onUserSelected) {
+    public enum Mode {
+        EMPLOYER(R.id.employer_action_navigation_saved_to_candidateDetailFragment),
+        ADMIN(R.id.admin_action_navigation_saved_to_candidateDetailFragment);
+
+        int destination;
+
+        Mode(int destination) {
+            this.destination = destination;
+        }
+    }
+
+    public CandidateRecyclerViewAdapter(NavController navController, Consumer<User> onUserSelected, CandidateRecyclerViewAdapter.Mode mode) {
         mValues = new ArrayList<>();
         this.navController = navController;
         this.onUserSelected = onUserSelected;
+        this.mode = mode;
     }
 
     public void submitList(List<User> users) {
@@ -51,8 +64,11 @@ public class CandidateRecyclerViewAdapter extends RecyclerView.Adapter<Candidate
         }
         holder.binding.viewCandidate.setOnClickListener(v -> {
             onUserSelected.accept(holder.user);
-            navController.navigate(R.id.admin_action_navigation_saved_to_candidateDetailFragment);
+            navController.navigate(this.mode.destination);
         });
+        if (holder.user.appliedFor != null) {
+            holder.binding.phone.setText("Applied For: " + holder.user.appliedFor);
+        }
     }
 
     @Override

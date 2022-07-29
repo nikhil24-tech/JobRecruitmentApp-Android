@@ -1,5 +1,7 @@
 package com.example.jobrecruitmentapp_android.viewmodels;
 
+import android.util.Pair;
+
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -7,15 +9,17 @@ import androidx.lifecycle.ViewModel;
 import com.example.jobrecruitmentapp_android.models.Job;
 import com.example.jobrecruitmentapp_android.models.User;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class UserViewModel extends ViewModel {
     private MutableLiveData<List<Job>> latestJobs;
@@ -27,6 +31,8 @@ public class UserViewModel extends ViewModel {
     private MediatorLiveData<List<Job>> searchedJobs;
     private MutableLiveData<User> selectedUser;
     private MutableLiveData<List<User>> allUsers;
+
+    private MediatorLiveData<List<User>> appliedUsers;
 
     public UserViewModel() {
         latestJobs = new MutableLiveData<>();
@@ -48,6 +54,11 @@ public class UserViewModel extends ViewModel {
         searchedJobs.addSource(latestJobs, jobs -> updateSearchedJobs(jobs, getSearchQuery().getValue()));
         searchedJobs.addSource(searchQuery, query -> updateSearchedJobs(getLatestJobs().getValue(), query));
 
+        appliedUsers = new MediatorLiveData<>();
+        appliedUsers.addSource(getCurrentUser(), user -> updateAppliedUsers(user, getAllUsers().getValue(), getLatestJobs().getValue()));
+        appliedUsers.addSource(getAllUsers(), users -> updateAppliedUsers(getCurrentUser().getValue(), users, getLatestJobs().getValue()));
+        appliedUsers.addSource(getLatestJobs(), jobs -> updateAppliedUsers(getCurrentUser().getValue(), getAllUsers().getValue(), jobs));
+
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore
@@ -56,6 +67,15 @@ public class UserViewModel extends ViewModel {
                 .addSnapshotListener((document, exception) -> {
                     User user = document.toObject(User.class);
                     currentUser.setValue(user);
+                });
+
+        firestore
+                .collection("jk_users")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        allUsers.setValue(task.getResult().toObjects(User.class));
+                    }
                 });
 
         firestore
@@ -75,15 +95,6 @@ public class UserViewModel extends ViewModel {
                         allJobs.add(document.toObject(Job.class));
                     }
                     latestJobs.setValue(allJobs);
-                });
-
-        firestore
-                .collection("jk_users")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        allUsers.setValue(task.getResult().toObjects(User.class));
-                    }
                 });
     }
 
@@ -131,6 +142,50 @@ public class UserViewModel extends ViewModel {
             }
             appliedJobs.setValue(newAppliedJobs);
         }
+    }
+
+    private void updateAppliedUsers(User employer, List<User> candidates, List<Job> allJobs) {
+        if (employer == null || employer.postedJobs == null || employer.postedJobs.isEmpty()
+                || candidates == null || candidates.isEmpty()
+                || allJobs == null || allJobs.isEmpty()) {
+            return;
+        }
+
+        Map<String, String> jobTitleMap = allJobs
+                .stream()
+                .collect(Collectors.toMap(job -> job.jobId, job -> job.jobName, (job1, job2) -> job1));
+        Map<String, Set<User>> appliedJobMap = candidates
+                .stream()
+                .flatMap(user -> {
+                    if (user.appliedJobs == null || user.appliedJobs.isEmpty()) {
+                        return Stream.empty();
+                    }
+                    return user.appliedJobs.stream().map(job -> new Pair<>(job, user));
+                }).collect(
+                        Collectors.groupingBy(
+                                pair -> pair.first,
+                                Collectors.mapping(
+                                        pair -> pair.second,
+                                        Collectors.toSet()
+                                )
+                        )
+                );
+        List<User> newAppliedUsers = new ArrayList<>();
+        for (String job: employer.postedJobs) {
+            Set<User> users = appliedJobMap.get(job);
+            if (users == null) {
+                continue;
+            }
+            for (User user: users) {
+                user.appliedFor = jobTitleMap.get(job);
+            }
+            newAppliedUsers.addAll(users);
+        }
+        appliedUsers.setValue(newAppliedUsers);
+    }
+
+    public MediatorLiveData<List<User>> getAppliedUsers() {
+        return appliedUsers;
     }
 
     public MutableLiveData<List<Job>> getLatestJobs() {

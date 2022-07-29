@@ -45,11 +45,23 @@ public class CandidateFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         NavController navController = Navigation.findNavController(requireView());
-        adapter = new CandidateRecyclerViewAdapter(navController, viewModel::setSelectedUser);
-        binding.list.setAdapter(adapter);
+        viewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
+            if (user == null) {
+                return;
+            }
+            if (user.userType != null && user.userType.equalsIgnoreCase("employer")) {
+                adapter = new CandidateRecyclerViewAdapter(navController, viewModel::setSelectedUser, CandidateRecyclerViewAdapter.Mode.EMPLOYER);
+                viewModel
+                        .getAppliedUsers()
+                        .observe(getViewLifecycleOwner(), adapter::submitList);
+            } else {
+                adapter = new CandidateRecyclerViewAdapter(navController, viewModel::setSelectedUser, CandidateRecyclerViewAdapter.Mode.ADMIN);
+                viewModel
+                        .getAllUsers()
+                        .observe(getViewLifecycleOwner(), adapter::submitList);
+            }
+            binding.list.setAdapter(adapter);
 
-        viewModel
-                .getAllUsers()
-                .observe(getViewLifecycleOwner(), adapter::submitList);
+        });
     }
 }
