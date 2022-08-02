@@ -14,6 +14,9 @@ import androidx.navigation.Navigation;
 
 import com.example.jobrecruitmentapp_android.R;
 import com.example.jobrecruitmentapp_android.databinding.FragmentAddJobBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -43,6 +46,8 @@ public class AddJobFragment extends Fragment {
         NavController navController = Navigation.findNavController(requireView());
 
         binding.addJobButton.setOnClickListener(v -> {
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
             Map<String, Object> map = new HashMap<>();
             map.put("jobName", binding.nameTextField.getEditText().getText().toString());
             map.put("location", binding.addressTextField.getEditText().getText().toString());
@@ -51,11 +56,16 @@ public class AddJobFragment extends Fragment {
             map.put("organisationType", binding.organisationTypeTextField.getEditText().getText().toString());
             map.put("requirements", binding.requirementsTextField.getEditText().getText().toString());
             map.put("salary", binding.salaryTextField.getEditText().getText().toString());
+            map.put("createdBy", uid);
 
-            FirebaseFirestore
-                    .getInstance()
-                    .collection("jobs")
-                    .add(map)
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            DocumentReference newJobRef = firestore.collection("jobs").document();
+            DocumentReference currentUserRef = firestore.collection("jk_users").document(uid);
+
+            firestore.batch()
+                    .set(newJobRef, map)
+                    .update(currentUserRef, "postedJobs", FieldValue.arrayUnion(newJobRef.getId()))
+                    .commit()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             Toast.makeText(requireContext(), "Job added!", Toast.LENGTH_SHORT).show();
