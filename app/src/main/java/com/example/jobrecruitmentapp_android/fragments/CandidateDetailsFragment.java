@@ -49,13 +49,13 @@ public class CandidateDetailsFragment extends Fragment {
                 return;
             }
             viewModel.getSelectedUser().observe(getViewLifecycleOwner(), user -> {
-                binding.userName.setText(user.name);
-                binding.location.setText(user.address);
-                binding.address.setText(user.address);
-                binding.experience.setText(user.jobExperience);
-                binding.skills.setText(user.skills);
-                binding.aboutMe.setText(user.aboutMe);
-                binding.phone.setText(user.phone);
+                binding.userName.setText(user.getName());
+                binding.location.setText(user.getAddress());
+                binding.address.setText(user.getAddress());
+                binding.experience.setText(user.jsJobXp);
+                binding.skills.setText(user.jsSkills);
+                binding.aboutMe.setText(user.jsAboutMe);
+                binding.phone.setText(user.jsPhone);
                 binding.email.setText(user.email);
                 if (currentUser.userType != null && currentUser.userType.equalsIgnoreCase("admin")) {
                     int color = binding.getRoot().getContext().getColor(android.R.color.holo_red_dark);

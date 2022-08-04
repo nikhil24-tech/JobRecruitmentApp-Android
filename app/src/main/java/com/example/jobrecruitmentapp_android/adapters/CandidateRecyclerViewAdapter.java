@@ -56,9 +56,9 @@ public class CandidateRecyclerViewAdapter extends RecyclerView.Adapter<Candidate
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.user = mValues.get(position);
-        holder.binding.name.setText(holder.user.name);
-        holder.binding.phone.setText(holder.user.phone);
-        holder.binding.location.setText(holder.user.address);
+        holder.binding.name.setText(holder.user.getName());
+        holder.binding.phone.setText(holder.user.jsPhone);
+        holder.binding.location.setText(holder.user.getAddress());
         if (holder.user.userType != null) {
             holder.binding.userType.setText(holder.user.userType.toUpperCase(Locale.ROOT));
         }
