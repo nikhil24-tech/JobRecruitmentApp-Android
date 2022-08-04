@@ -69,18 +69,18 @@ public class JobDetailFragment extends Fragment {
                     CollectionReference collection = firestore.collection("jk_users");
                     DocumentReference document = collection.document(user.uid);
                     binding.applyJob.setOnClickListener(v -> document
-                            .update("appliedJobs", FieldValue.arrayUnion(job.jobId))
+                            .update("appliedJobs", FieldValue.arrayUnion(job.docID))
                             .addOnSuccessListener(task -> Toast.makeText(requireContext(), "Job applied!", Toast.LENGTH_SHORT).show())
                             .addOnFailureListener(task -> Toast.makeText(requireContext(), "Unable to apply job!", Toast.LENGTH_SHORT).show())
                     );
                     binding.saveJob.setOnClickListener(v -> document
-                            .update("savedJobs", FieldValue.arrayUnion(job.jobId))
+                            .update("savedJobs", FieldValue.arrayUnion(job.docID))
                             .addOnSuccessListener(task -> Toast.makeText(requireContext(), "Job saved!", Toast.LENGTH_SHORT).show())
                             .addOnFailureListener(task -> Toast.makeText(requireContext(), "Unable to save job!", Toast.LENGTH_SHORT).show())
                     );
                 } else if (user.userType.equalsIgnoreCase("employer")) {
                     CollectionReference collection = firestore.collection("jobs");
-                    DocumentReference document = collection.document(job.jobId);
+                    DocumentReference document = collection.document(job.docID);
 
                     int color = binding.getRoot().getContext().getColor(android.R.color.holo_red_dark);
                     binding.applyJob.setBackgroundTintList(ColorStateList.valueOf(color));
@@ -101,7 +101,7 @@ public class JobDetailFragment extends Fragment {
                     });
                 } else {
                     CollectionReference collection = firestore.collection("jobs");
-                    DocumentReference document = collection.document(job.jobId);
+                    DocumentReference document = collection.document(job.docID);
 
                     int color = binding.getRoot().getContext().getColor(android.R.color.holo_red_dark);
                     binding.applyJob.setBackgroundTintList(ColorStateList.valueOf(color));

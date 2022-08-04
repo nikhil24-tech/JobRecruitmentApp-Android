@@ -5,7 +5,7 @@ import com.google.firebase.firestore.DocumentId;
 public class Job {
 
     @DocumentId
-    public String jobId;
+    public String docID;
     public String jobName;
     public String location;
     public String address;

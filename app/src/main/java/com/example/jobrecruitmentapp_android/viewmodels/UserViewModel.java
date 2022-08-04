@@ -115,7 +115,7 @@ public class UserViewModel extends ViewModel {
             List<Job> newSavedJobs = new ArrayList<>();
             Map<String, Job> jobMap = new HashMap<>();
             for (Job job: jobs) {
-                jobMap.put(job.jobId, job);
+                jobMap.put(job.docID, job);
             }
             for (String jobId: user.savedJobs) {
                 Job job = jobMap.get(jobId);
@@ -132,7 +132,7 @@ public class UserViewModel extends ViewModel {
             List<Job> newAppliedJobs = new ArrayList<>();
             Map<String, Job> jobMap = new HashMap<>();
             for (Job job: jobs) {
-                jobMap.put(job.jobId, job);
+                jobMap.put(job.docID, job);
             }
             for (String jobId: user.appliedJobs) {
                 Job job = jobMap.get(jobId);
@@ -153,7 +153,7 @@ public class UserViewModel extends ViewModel {
 
         Map<String, String> jobTitleMap = allJobs
                 .stream()
-                .collect(Collectors.toMap(job -> job.jobId, job -> job.jobName, (job1, job2) -> job1));
+                .collect(Collectors.toMap(job -> job.docID, job -> job.jobName, (job1, job2) -> job1));
         Map<String, Set<User>> appliedJobMap = candidates
                 .stream()
                 .flatMap(user -> {

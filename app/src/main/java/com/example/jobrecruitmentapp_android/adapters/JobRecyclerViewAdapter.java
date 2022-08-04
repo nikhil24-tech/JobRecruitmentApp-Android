@@ -36,7 +36,10 @@ public class JobRecyclerViewAdapter extends RecyclerView.Adapter<JobRecyclerView
         APPLIED(R.id.action_navigation_apply_to_jobDetailFragment),
         SAVED(R.id.action_navigation_saved_to_jobDetailFragment),
         EMPLOYER_LATEST(R.id.employer_action_navigation_home_to_jobDetailFragment),
-        EMPLOYER_SEARCH(R.id.employer_action_navigation_search_to_jobDetailFragment);
+        EMPLOYER_SEARCH(R.id.employer_action_navigation_search_to_jobDetailFragment),
+        EMPLOYER_EDIT(R.id.action_employer_navigation_job_modify_to_employer_navigation_home),
+        ADMIN_LATEST(R.id.admin_action_navigation_home_to_jobDetailFragment),
+        ADMIN_SEARCH(R.id.admin_action_navigation_search_to_jobDetailFragment);
 
         int applyAction;
         Mode(int applyAction) {
@@ -66,12 +69,8 @@ public class JobRecyclerViewAdapter extends RecyclerView.Adapter<JobRecyclerView
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.job = mValues.get(position);
-        holder.binding.applyJob.setOnClickListener(v -> {
-            onJobSelected.accept(holder.job);
-            navController.navigate(this.mode.applyAction);
-        });
         holder.binding.description.setText(holder.job.jobDescription);
-        holder.binding.location.setText(holder.job.location);
+        holder.binding.location.setText(holder.job.address);
         holder.binding.name.setText(holder.job.jobName);
         holder.binding.salary.setText(holder.job.salary);
 
@@ -86,29 +85,54 @@ public class JobRecyclerViewAdapter extends RecyclerView.Adapter<JobRecyclerView
             holder.binding.saveJob.setText("Unsave Job");
         }
 
-        if (mode == Mode.APPLIED || mode == Mode.EMPLOYER_SEARCH || mode == Mode.EMPLOYER_LATEST) {
+        if (mode == Mode.APPLIED || mode == Mode.EMPLOYER_SEARCH || mode == Mode.EMPLOYER_LATEST
+                || mode == Mode.ADMIN_LATEST || mode == Mode.ADMIN_SEARCH) {
             holder.binding.saveJob.setVisibility(View.GONE);
             holder.binding.applyJob.setText("View Job");
         }
 
-        holder.binding.saveJob.setOnClickListener(v -> {
-            FieldValue value;
-            String success, failure;
-            if (mode == Mode.SAVED) {
-                value = FieldValue.arrayRemove(holder.job.jobId);
-                success = "Job unsaved!";
-                failure = "Unable to unsave job!";
-            } else {
-                value = FieldValue.arrayUnion(holder.job.jobId);
-                success = "Job saved!";
-                failure = "Unable to save job!";
-            }
+        if (mode == Mode.EMPLOYER_EDIT) {
+            int color = holder.binding.getRoot().getContext().getColor(android.R.color.holo_red_dark);
+            holder.binding.saveJob.setBackgroundTintList(ColorStateList.valueOf(color));
+            holder.binding.saveJob.setText("Delete Job");
+            holder.binding.applyJob.setText("Edit Job");
+        }
 
-            document
-                    .update("savedJobs", value)
-                    .addOnSuccessListener(task -> Toast.makeText(holder.itemView.getContext(), success, Toast.LENGTH_SHORT).show())
-                    .addOnFailureListener(task -> Toast.makeText(holder.itemView.getContext(), failure, Toast.LENGTH_SHORT).show());
+        holder.binding.applyJob.setOnClickListener(v -> {
+            onJobSelected.accept(holder.job);
+            navController.navigate(this.mode.applyAction);
         });
+
+        if (mode == Mode.EMPLOYER_EDIT) {
+            holder.binding.saveJob.setOnClickListener(v -> document
+                    .delete()
+                    .addOnSuccessListener(task -> {
+                        Toast.makeText(holder.itemView.getContext(), "Job deleted!", Toast.LENGTH_SHORT).show();
+                        notifyItemChanged(position);
+                    })
+                    .addOnFailureListener(task -> Toast.makeText(holder.itemView.getContext(), "Unable to delete job!", Toast.LENGTH_SHORT).show()));
+        } else {
+
+            holder.binding.saveJob.setOnClickListener(v -> {
+                FieldValue value;
+                String success, failure;
+                if (mode == Mode.SAVED) {
+                    value = FieldValue.arrayRemove(holder.job.docID);
+                    success = "Job unsaved!";
+                    failure = "Unable to unsave job!";
+                } else {
+                    value = FieldValue.arrayUnion(holder.job.docID);
+                    success = "Job saved!";
+                    failure = "Unable to save job!";
+                }
+
+                document
+                        .update("savedJobs", value)
+                        .addOnSuccessListener(task -> Toast.makeText(holder.itemView.getContext(), success, Toast.LENGTH_SHORT).show())
+                        .addOnFailureListener(task -> Toast.makeText(holder.itemView.getContext(), failure, Toast.LENGTH_SHORT).show());
+            });
+        }
+
     }
 
     @Override
