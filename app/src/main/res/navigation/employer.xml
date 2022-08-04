@@ -29,13 +29,17 @@
         tools:layout="@layout/fragment_saved_job">
         <action
             android:id="@+id/employer_action_navigation_saved_to_candidateDetailFragment"
-            app:destination="@id/employerJobDetailFragment" />
+            app:destination="@id/candidateDetailsFragment2" />
     </fragment>
 
     <fragment
         android:id="@+id/employer_navigation_profile"
         android:name="com.example.jobrecruitmentapp_android.fragments.ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_employer_navigation_profile_to_updateProfileFragment"
+            app:destination="@id/updateProfileFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/employerJobDetailFragment"
@@ -63,6 +67,22 @@
         <action
             android:id="@+id/action_addJobFragment_to_employer_navigation_job_modify"
             app:destination="@id/employer_navigation_job_modify" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateProfileFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.UpdateProfileFragment"
+        tools:layout="@layout/fragment_update_profile" >
+        <action
+            android:id="@+id/action_updateProfileFragment_to_employer_navigation_profile"
+            app:destination="@id/employer_navigation_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/candidateDetailsFragment2"
+        android:name="com.example.jobrecruitmentapp_android.fragments.CandidateDetailsFragment"
+        tools:layout="@layout/fragment_candidate_details" >
+        <action
+            android:id="@+id/action_candidateDetailsFragment2_to_employer_navigation_candidates"
+            app:destination="@id/employer_navigation_candidates" />
     </fragment>
 
 

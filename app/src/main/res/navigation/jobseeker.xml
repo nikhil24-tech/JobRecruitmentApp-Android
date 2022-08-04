@@ -44,11 +44,23 @@
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.jobrecruitmentapp_android.fragments.ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_updateProfileFragment3"
+            app:destination="@id/updateProfileFragment3" />
+    </fragment>
 
     <fragment
         android:id="@+id/jobDetailFragment"
         android:name="com.example.jobrecruitmentapp_android.fragments.JobDetailFragment"
         tools:layout="@layout/fragment_job_detail" />
+    <fragment
+        android:id="@+id/updateProfileFragment3"
+        android:name="com.example.jobrecruitmentapp_android.fragments.UpdateProfileFragment"
+        tools:layout="@layout/fragment_update_profile" >
+        <action
+            android:id="@+id/action_updateProfileFragment3_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+    </fragment>
 
 </navigation>

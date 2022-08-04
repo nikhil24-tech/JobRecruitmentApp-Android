@@ -35,7 +35,11 @@
     <fragment
         android:id="@+id/admin_navigation_profile"
         android:name="com.example.jobrecruitmentapp_android.fragments.ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_admin_navigation_profile_to_updateProfileFragment2"
+            app:destination="@id/updateProfileFragment2" />
+    </fragment>
 
     <fragment
         android:id="@+id/adminJobDetailFragment"
@@ -45,9 +49,19 @@
     <fragment
         android:id="@+id/candidateDetailsFragment"
         android:name="com.example.jobrecruitmentapp_android.fragments.CandidateDetailsFragment"
-        tools:layout="@layout/fragment_candidate_details" />
-
-
+        tools:layout="@layout/fragment_candidate_details" >
+        <action
+            android:id="@+id/action_candidateDetailsFragment_to_admin_navigation_candidates"
+            app:destination="@id/admin_navigation_candidates" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateProfileFragment2"
+        android:name="com.example.jobrecruitmentapp_android.fragments.UpdateProfileFragment"
+        tools:layout="@layout/fragment_update_profile" >
+        <action
+            android:id="@+id/action_updateProfileFragment2_to_admin_navigation_profile"
+            app:destination="@id/admin_navigation_profile" />
+    </fragment>
 
 
 </navigation>

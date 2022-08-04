@@ -55,10 +55,12 @@ public class JobListFragment extends Fragment {
                 return;
             }
             JobRecyclerViewAdapter.Mode mode;
-            if (user.userType != null && (user.userType.equalsIgnoreCase("employer") || user.userType.equalsIgnoreCase("admin")) ) {
+            if (user.userType == null || user.userType.equalsIgnoreCase("jobseeker")) {
+                mode = JobRecyclerViewAdapter.Mode.LATEST;
+            } else if (user.userType.equalsIgnoreCase("employer")){
                 mode = JobRecyclerViewAdapter.Mode.EMPLOYER_LATEST;
             } else {
-                mode = JobRecyclerViewAdapter.Mode.LATEST;
+                mode = JobRecyclerViewAdapter.Mode.ADMIN_LATEST;
             }
             adapter = new JobRecyclerViewAdapter(navController, viewModel::setSelectedJob, mode);
             viewModel
