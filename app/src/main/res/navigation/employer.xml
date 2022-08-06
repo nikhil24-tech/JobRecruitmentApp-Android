@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/employer_navigation"
+    app:startDestination="@+id/employer_navigation_home">
+
+    <fragment
+        android:id="@+id/employer_navigation_home"
+        android:name="com.example.jobrecruitmentapp_android.fragments.JobListFragment"
+        tools:layout="@layout/fragment_job_list" >
+        <action
+            android:id="@+id/employer_action_navigation_home_to_jobDetailFragment"
+            app:destination="@id/employerJobDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/employer_navigation_search"
+        android:name="com.example.jobrecruitmentapp_android.fragments.JobSearchFragment"
+        tools:layout="@layout/fragment_job_search" >
+        <action
+            android:id="@+id/employer_action_navigation_search_to_jobDetailFragment"
+            app:destination="@id/employerJobDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/employer_navigation_candidates"
+        android:name="com.example.jobrecruitmentapp_android.fragments.CandidateFragment"
+        tools:layout="@layout/fragment_saved_job">
+        <action
+            android:id="@+id/employer_action_navigation_saved_to_candidateDetailFragment"
+            app:destination="@id/candidateDetailsFragment2" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/employer_navigation_profile"
+        android:name="com.example.jobrecruitmentapp_android.fragments.ProfileFragment"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_employer_navigation_profile_to_updateProfileFragment"
+            app:destination="@id/updateProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/employerJobDetailFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.JobDetailFragment"
+        tools:layout="@layout/fragment_job_detail" >
+        <action
+            android:id="@+id/action_employerJobDetailFragment_to_addJobFragment"
+            app:destination="@id/addJobFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/employer_navigation_job_modify"
+        android:name="com.example.jobrecruitmentapp_android.fragments.ModifyJobsFragment"
+        tools:layout="@layout/fragment_modify_jobs">
+        <action
+            android:id="@+id/action_employer_navigation_job_modify_to_addJobFragment"
+            app:destination="@id/addJobFragment" />
+        <action
+            android:id="@+id/action_employer_navigation_job_modify_to_employer_navigation_home"
+            app:destination="@id/employer_navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/addJobFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.AddJobFragment"
+        tools:layout="@layout/fragment_add_job" >
+        <action
+            android:id="@+id/action_addJobFragment_to_employer_navigation_job_modify"
+            app:destination="@id/employer_navigation_job_modify" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateProfileFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.UpdateProfileFragment"
+        tools:layout="@layout/fragment_update_profile" >
+        <action
+            android:id="@+id/action_updateProfileFragment_to_employer_navigation_profile"
+            app:destination="@id/employer_navigation_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/candidateDetailsFragment2"
+        android:name="com.example.jobrecruitmentapp_android.fragments.CandidateDetailsFragment"
+        tools:layout="@layout/fragment_candidate_details" >
+        <action
+            android:id="@+id/action_candidateDetailsFragment2_to_employer_navigation_candidates"
+            app:destination="@id/employer_navigation_candidates" />
+    </fragment>
+
+
+</navigation>

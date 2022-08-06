@@ -1,0 +1,130 @@
+{
+  "project_info": {
+    "project_number": "427842989253",
+    "project_id": "jobkart-46567",
+    "storage_bucket": "jobkart-46567.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427842989253:android:4d5e36316112ca167bd4ac",
+        "android_client_info": {
+          "package_name": "com.example.job_kart_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "427842989253-4b6rndbi5dp1k184k2s5abdl8fit49jd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.job_kart_app",
+            "certificate_hash": "c1e92e7ba7c97dee5b205e73b4faeee47452f060"
+          }
+        },
+        {
+          "client_id": "427842989253-8fndsp5dogl5n1pl5ss4he4nfoujecm0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.job_kart_app",
+            "certificate_hash": "295ba5aa12c8ae8c4ff7bf9812adea77432da651"
+          }
+        },
+        {
+          "client_id": "427842989253-n65vc4ch9tqk7s9rbhloog9h5509qefn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.job_kart_app",
+            "certificate_hash": "92142282c43e31ce2ae01ee0b5232840a023ad8b"
+          }
+        },
+        {
+          "client_id": "427842989253-ltollm99oijifcpdhmuro75r26aip2f8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKB-CvTo_oxrvfos7_gWQUm4io878Q2c4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "427842989253-ltollm99oijifcpdhmuro75r26aip2f8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "427842989253-pisfus8n8ttlainevauglmpkatpipp57.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.jobKartApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427842989253:android:b0f29b3a59b98edd7bd4ac",
+        "android_client_info": {
+          "package_name": "com.example.jobrecruitmentapp_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "427842989253-0qb83boi8vv6ojctlq76lgrqh044evmj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jobrecruitmentapp_android",
+            "certificate_hash": "92142282c43e31ce2ae01ee0b5232840a023ad8b"
+          }
+        },
+        {
+          "client_id": "427842989253-11l1r3umqc7j7lqgv30030mm33jk143g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jobrecruitmentapp_android",
+            "certificate_hash": "c1e92e7ba7c97dee5b205e73b4faeee47452f060"
+          }
+        },
+        {
+          "client_id": "427842989253-fid87ljm2psmmqkv7ntc2ttiuupjld7c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jobrecruitmentapp_android",
+            "certificate_hash": "295ba5aa12c8ae8c4ff7bf9812adea77432da651"
+          }
+        },
+        {
+          "client_id": "427842989253-ltollm99oijifcpdhmuro75r26aip2f8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKB-CvTo_oxrvfos7_gWQUm4io878Q2c4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "427842989253-ltollm99oijifcpdhmuro75r26aip2f8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "427842989253-pisfus8n8ttlainevauglmpkatpipp57.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.jobKartApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
