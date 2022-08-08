@@ -50,12 +50,13 @@ public class AddJobFragment extends Fragment {
 
             Map<String, Object> map = new HashMap<>();
             map.put("jobName", binding.nameTextField.getEditText().getText().toString());
-            map.put("location", binding.addressTextField.getEditText().getText().toString());
-            map.put("address", binding.addressTextField.getEditText().getText().toString());
-            map.put("contactEmail", binding.emailTextField.getEditText().getText().toString());
-            map.put("organisationType", binding.organisationTypeTextField.getEditText().getText().toString());
-            map.put("requirements", binding.requirementsTextField.getEditText().getText().toString());
-            map.put("salary", binding.salaryTextField.getEditText().getText().toString());
+            map.put("jobAddress", binding.addressTextField.getEditText().getText().toString());
+            map.put("jobLocation", binding.addressTextField.getEditText().getText().toString());
+            map.put("jobEmail", binding.emailTextField.getEditText().getText().toString());
+            map.put("orgType", binding.organisationTypeTextField.getEditText().getText().toString());
+            map.put("jobRequirements", binding.requirementsTextField.getEditText().getText().toString());
+            map.put("jobDescription", binding.descriptionTextField.getEditText().getText().toString());
+            map.put("salaryPerHr", binding.salaryTextField.getEditText().getText().toString());
             map.put("createdBy", uid);
 
             FirebaseFirestore firestore = FirebaseFirestore.getInstance();

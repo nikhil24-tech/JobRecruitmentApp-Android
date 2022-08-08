@@ -148,11 +148,13 @@ public class UserViewModel extends ViewModel {
         if (employer == null || employer.postedJobs == null || employer.postedJobs.isEmpty()
                 || candidates == null || candidates.isEmpty()
                 || allJobs == null || allJobs.isEmpty()) {
+            appliedUsers.setValue(new ArrayList<>());
             return;
         }
 
         Map<String, String> jobTitleMap = allJobs
                 .stream()
+                .filter(job -> job.jobName != null && job.docID != null)
                 .collect(Collectors.toMap(job -> job.docID, job -> job.jobName, (job1, job2) -> job1));
         Map<String, Set<User>> appliedJobMap = candidates
                 .stream()
@@ -178,6 +180,7 @@ public class UserViewModel extends ViewModel {
             }
             for (User user: users) {
                 user.appliedFor = jobTitleMap.get(job);
+                user.appliedForJobId = job;
             }
             newAppliedUsers.addAll(users);
         }

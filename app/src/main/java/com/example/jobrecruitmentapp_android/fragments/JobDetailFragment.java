@@ -17,7 +17,6 @@ import androidx.navigation.Navigation;
 import com.example.jobrecruitmentapp_android.R;
 import com.example.jobrecruitmentapp_android.databinding.FragmentJobDetailBinding;
 import com.example.jobrecruitmentapp_android.viewmodels.UserViewModel;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -60,11 +59,11 @@ public class JobDetailFragment extends Fragment {
                 FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
                 binding.jobName.setText(job.jobName);
-                binding.contact.setText(job.contactEmail);
-                binding.requirements.setText(job.requirements);
+                binding.contact.setText(job.empEmail);
+                binding.requirements.setText(job.jobRequirements);
                 binding.description.setText(job.jobDescription);
-                binding.salary.setText(job.salary);
-                binding.location.setText(job.location);
+                binding.salary.setText(job.salaryPerHr);
+                binding.location.setText(job.jobLocation);
                 if (user.userType == null || user.userType.equalsIgnoreCase("jobseeker")) {
                     CollectionReference collection = firestore.collection("jk_users");
                     DocumentReference document = collection.document(user.uid);

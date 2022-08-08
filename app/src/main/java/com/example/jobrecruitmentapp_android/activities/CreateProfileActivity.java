@@ -43,10 +43,15 @@ public class CreateProfileActivity extends AppCompatActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", id);
         map.put("name", orgName);
-        map.put("organisationType", orgType);
-        map.put("phone", phone);
+        map.put("jsName", orgName);
+        map.put("empName", orgName);
+        map.put("orgType", orgType);
+        map.put("jsPhone", phone);
+        map.put("empPhone", phone);
         map.put("email", email);
-        map.put("address", address);
+        map.put("jsAddress", address);
+        map.put("jsLocation", address);
+        map.put("orgAddress", address);
         map.put("userType", userType);
 
         FirebaseFirestore

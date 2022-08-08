@@ -70,9 +70,9 @@ public class JobRecyclerViewAdapter extends RecyclerView.Adapter<JobRecyclerView
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.job = mValues.get(position);
         holder.binding.description.setText(holder.job.jobDescription);
-        holder.binding.location.setText(holder.job.address);
+        holder.binding.location.setText(holder.job.jobAddress);
         holder.binding.name.setText(holder.job.jobName);
-        holder.binding.salary.setText(holder.job.salary);
+        holder.binding.salary.setText(holder.job.salaryPerHr);
 
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
