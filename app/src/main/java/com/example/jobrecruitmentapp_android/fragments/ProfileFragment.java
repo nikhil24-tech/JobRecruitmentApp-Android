@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.jobrecruitmentapp_android.R;
 import com.example.jobrecruitmentapp_android.activities.SplashActivity;
@@ -25,7 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
 
-    public ProfileFragment() {}
+    public ProfileFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,9 @@ public class ProfileFragment extends Fragment {
 
         UserViewModel model = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         model.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
+            if (user == null) {
+                return;
+            }
             int action;
             if (user.userType == null || user.userType.equalsIgnoreCase("jobseeker")) {
                 action = R.id.action_navigation_profile_to_updateProfileFragment3;
@@ -53,7 +56,7 @@ public class ProfileFragment extends Fragment {
             } else {
                 action = R.id.action_admin_navigation_profile_to_updateProfileFragment2;
             }
-            NavController navController =  Navigation.findNavController(requireView());
+            NavController navController = Navigation.findNavController(requireView());
             binding.updateProfile.setOnClickListener(v -> navController.navigate(action));
         });
 
