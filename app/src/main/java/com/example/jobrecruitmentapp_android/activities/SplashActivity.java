@@ -10,7 +10,10 @@ import com.example.jobrecruitmentapp_android.models.User;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -31,19 +34,29 @@ public class SplashActivity extends AppCompatActivity {
                 FirebaseFirestore
                         .getInstance()
                         .collection("jk_users")
-                        .document(user.getUid())
+                        .whereEqualTo("uid", user.getUid())
                         .get()
                         .addOnCompleteListener(task -> {
                             Class<?> destination;
                             if (task.isSuccessful()) {
-                                User jkuser = task.getResult().toObject(User.class);
-                                if (jkuser != null && jkuser.userType != null && jkuser.userType.equalsIgnoreCase("employer")) {
-                                    destination = EmployerActivity.class;
-                                } else if (jkuser != null && jkuser.userType != null && jkuser.userType.equalsIgnoreCase("admin")) {
-                                    destination = AdminActivity.class;
+                                List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
+                                if (documentSnapshots.isEmpty()) {
+                                    FirebaseAuth.getInstance().signOut();
+                                    destination = UserTypeActivity.class;
                                 } else {
-                                    destination = JobSeekerActivity.class;
+                                    User jkuser = documentSnapshots.get(0).toObject(User.class);
+                                    if (jkuser == null) {
+                                        FirebaseAuth.getInstance().signOut();
+                                        destination = UserTypeActivity.class;
+                                    } else if (jkuser.userType == null || jkuser.userType.equalsIgnoreCase("jobseeker")) {
+                                        destination = JobSeekerActivity.class;
+                                    } else if (jkuser.userType.equalsIgnoreCase("employer")) {
+                                        destination = EmployerActivity.class;
+                                    } else {
+                                        destination = AdminActivity.class;
+                                    }
                                 }
+
                             } else {
                                 FirebaseAuth.getInstance().signOut();
                                 destination = UserTypeActivity.class;

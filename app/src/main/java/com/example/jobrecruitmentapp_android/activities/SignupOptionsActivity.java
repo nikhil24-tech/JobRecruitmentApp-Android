@@ -23,11 +23,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignupOptionsActivity extends AppCompatActivity {
 
+    private static final int RC_SIGN_IN = 1000;
     ActivitySignupOptionsBinding binding;
-
     private GoogleSignInClient client;
     private FirebaseAuth auth;
-    private static final int RC_SIGN_IN = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -14,6 +14,7 @@ import androidx.navigation.Navigation;
 
 import com.example.jobrecruitmentapp_android.R;
 import com.example.jobrecruitmentapp_android.databinding.FragmentAddJobBinding;
+import com.example.jobrecruitmentapp_android.viewmodels.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -43,6 +44,7 @@ public class AddJobFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         NavController navController = Navigation.findNavController(requireView());
 
         binding.addJobButton.setOnClickListener(v -> {
