@@ -3,7 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Admin/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/activity_create_profile.xml" value="0.184375" />
+        <entry key="..\:/Users/DELL/OneDrive/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/fragment_edit_job_list.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_admin.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_create_profile.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_email_login.xml" value="0.1" />
@@ -12,8 +12,6 @@
         <entry key="app/src/main/res/layout/activity_signup_options.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layout/activity_user_type.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_add_job.xml" value="0.18614130434782608" />
-        <entry key="app/src/main/res/layout/fragment_job_detail.xml" value="0.1" />
       </map>
     </option>
   </component>
