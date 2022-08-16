@@ -23,17 +23,6 @@ public class CandidateRecyclerViewAdapter extends RecyclerView.Adapter<Candidate
     private final NavController navController;
     private final CandidateRecyclerViewAdapter.Mode mode;
 
-    public enum Mode {
-        EMPLOYER(R.id.employer_action_navigation_saved_to_candidateDetailFragment),
-        ADMIN(R.id.admin_action_navigation_saved_to_candidateDetailFragment);
-
-        int destination;
-
-        Mode(int destination) {
-            this.destination = destination;
-        }
-    }
-
     public CandidateRecyclerViewAdapter(NavController navController, Consumer<User> onUserSelected, CandidateRecyclerViewAdapter.Mode mode) {
         mValues = new ArrayList<>();
         this.navController = navController;
@@ -74,6 +63,17 @@ public class CandidateRecyclerViewAdapter extends RecyclerView.Adapter<Candidate
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    public enum Mode {
+        EMPLOYER(R.id.employer_action_navigation_saved_to_candidateDetailFragment),
+        ADMIN(R.id.admin_action_navigation_saved_to_candidateDetailFragment);
+
+        int destination;
+
+        Mode(int destination) {
+            this.destination = destination;
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

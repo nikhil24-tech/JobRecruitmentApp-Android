@@ -15,10 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.jobrecruitmentapp_android.adapters.JobRecyclerViewAdapter;
 import com.example.jobrecruitmentapp_android.databinding.FragmentAppliedJobBinding;
-import com.example.jobrecruitmentapp_android.models.Job;
 import com.example.jobrecruitmentapp_android.viewmodels.UserViewModel;
-
-import java.util.function.Consumer;
 
 public class AppliedJobFragment extends Fragment {
 
@@ -49,7 +46,7 @@ public class AppliedJobFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         NavController navController = Navigation.findNavController(requireView());
         viewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        JobRecyclerViewAdapter adapter = new JobRecyclerViewAdapter(navController, (Consumer<Job>) viewModel, JobRecyclerViewAdapter.Mode.APPLIED);
+        JobRecyclerViewAdapter adapter = new JobRecyclerViewAdapter(navController, viewModel, JobRecyclerViewAdapter.Mode.APPLIED);
         viewModel
                 .getUserAppliedJobs()
                 .observe(getViewLifecycleOwner(), adapter::submitList);
