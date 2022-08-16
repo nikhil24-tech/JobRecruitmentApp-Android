@@ -59,12 +59,15 @@ public class EmailLoginActivity extends AppCompatActivity {
         FirebaseFirestore
                 .getInstance()
                 .collection("jk_users")
-                .document(id)
+                .whereEqualTo("uid", id)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        User user = task.getResult().toObject(User.class);
-                        if (user != null && user.isBlocked) {
+                        User user = task.getResult().getDocuments().get(0).toObject(User.class);
+                        if (user == null) {
+                            Toast.makeText(this, "User not found!", Toast.LENGTH_LONG).show();
+                            FirebaseAuth.getInstance().signOut();
+                        } else if (user.isBlocked) {
                             Toast.makeText(this, "Cannot login. User is blocked!", Toast.LENGTH_LONG).show();
                             FirebaseAuth.getInstance().signOut();
                         } else {

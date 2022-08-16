@@ -13,44 +13,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.jobrecruitmentapp_android.R;
 import com.example.jobrecruitmentapp_android.databinding.ItemJobBinding;
 import com.example.jobrecruitmentapp_android.models.Job;
+import com.example.jobrecruitmentapp_android.viewmodels.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class JobRecyclerViewAdapter extends RecyclerView.Adapter<JobRecyclerViewAdapter.ViewHolder> {
 
     private final NavController navController;
     private final List<Job> mValues;
-    private final Consumer<Job> onJobSelected;
+    private final UserViewModel userViewModel;
     private final Mode mode;
 
-    public enum Mode {
-        LATEST(R.id.action_navigation_home_to_jobDetailFragment),
-        SEARCH(R.id.action_navigation_search_to_jobDetailFragment),
-        APPLIED(R.id.action_navigation_apply_to_jobDetailFragment),
-        SAVED(R.id.action_navigation_saved_to_jobDetailFragment),
-        EMPLOYER_LATEST(R.id.employer_action_navigation_home_to_jobDetailFragment),
-        EMPLOYER_SEARCH(R.id.employer_action_navigation_search_to_jobDetailFragment),
-        EMPLOYER_EDIT(R.id.action_employer_navigation_job_modify_to_employer_navigation_home),
-        ADMIN_LATEST(R.id.admin_action_navigation_home_to_jobDetailFragment),
-        ADMIN_SEARCH(R.id.admin_action_navigation_search_to_jobDetailFragment);
-
-        int applyAction;
-        Mode(int applyAction) {
-            this.applyAction = applyAction;
-        }
-    }
-
-    public JobRecyclerViewAdapter(NavController navController, Consumer<Job> onJobSelected, Mode mode) {
+    public JobRecyclerViewAdapter(NavController navController, UserViewModel viewModel, Mode mode) {
         this.navController = navController;
         this.mValues = new ArrayList<>();
-        this.onJobSelected = onJobSelected;
+        this.userViewModel = viewModel;
         this.mode = mode;
     }
 
@@ -70,11 +52,13 @@ public class JobRecyclerViewAdapter extends RecyclerView.Adapter<JobRecyclerView
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.job = mValues.get(position);
         holder.binding.description.setText(holder.job.jobDescription);
-        holder.binding.location.setText(holder.job.address);
+        holder.binding.location.setText(holder.job.jobAddress);
         holder.binding.name.setText(holder.job.jobName);
-        holder.binding.salary.setText(holder.job.salary);
+        holder.binding.salary.setText(holder.job.salaryPerHr);
 
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         CollectionReference collection = firestore.collection("jk_users");
         DocumentReference document = collection.document(id);
@@ -99,7 +83,7 @@ public class JobRecyclerViewAdapter extends RecyclerView.Adapter<JobRecyclerView
         }
 
         holder.binding.applyJob.setOnClickListener(v -> {
-            onJobSelected.accept(holder.job);
+            userViewModel.setSelectedJob(holder.job);
             navController.navigate(this.mode.applyAction);
         });
 
@@ -114,22 +98,11 @@ public class JobRecyclerViewAdapter extends RecyclerView.Adapter<JobRecyclerView
         } else {
 
             holder.binding.saveJob.setOnClickListener(v -> {
-                FieldValue value;
-                String success, failure;
                 if (mode == Mode.SAVED) {
-                    value = FieldValue.arrayRemove(holder.job.docID);
-                    success = "Job unsaved!";
-                    failure = "Unable to unsave job!";
+                    userViewModel.unSaveJob(holder.binding.getRoot().getContext(), email, holder.job);
                 } else {
-                    value = FieldValue.arrayUnion(holder.job.docID);
-                    success = "Job saved!";
-                    failure = "Unable to save job!";
+                    userViewModel.saveJob(holder.binding.getRoot().getContext(), email, holder.job);
                 }
-
-                document
-                        .update("savedJobs", value)
-                        .addOnSuccessListener(task -> Toast.makeText(holder.itemView.getContext(), success, Toast.LENGTH_SHORT).show())
-                        .addOnFailureListener(task -> Toast.makeText(holder.itemView.getContext(), failure, Toast.LENGTH_SHORT).show());
             });
         }
 
@@ -138,6 +111,24 @@ public class JobRecyclerViewAdapter extends RecyclerView.Adapter<JobRecyclerView
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    public enum Mode {
+        LATEST(R.id.action_navigation_home_to_jobDetailFragment),
+        SEARCH(R.id.action_navigation_search_to_jobDetailFragment),
+        APPLIED(R.id.action_navigation_apply_to_jobDetailFragment),
+        SAVED(R.id.action_navigation_saved_to_jobDetailFragment),
+        EMPLOYER_LATEST(R.id.employer_action_navigation_home_to_jobDetailFragment),
+        EMPLOYER_SEARCH(R.id.employer_action_navigation_search_to_jobDetailFragment),
+        EMPLOYER_EDIT(R.id.action_employer_navigation_job_modify_to_employer_navigation_home),
+        ADMIN_LATEST(R.id.admin_action_navigation_home_to_jobDetailFragment),
+        ADMIN_SEARCH(R.id.admin_action_navigation_search_to_jobDetailFragment);
+
+        int applyAction;
+
+        Mode(int applyAction) {
+            this.applyAction = applyAction;
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

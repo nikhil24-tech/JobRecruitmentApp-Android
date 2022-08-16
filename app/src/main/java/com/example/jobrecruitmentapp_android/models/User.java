@@ -3,36 +3,33 @@ package com.example.jobrecruitmentapp_android.models;
 import java.util.List;
 
 public class User {
-    public String empName;
-    public String orgImageUrl;
-    public String empPhone;
-    public String orgType;
-    public String orgName;
-    public String orgAddress;
-
-    public String jsName;
     public String email;
-    public String name;
-    public String uid;
+    public String empName;
+    public String empPhone = "Enter Phone";
+    public boolean isBlocked = false;
+    public String jsAboutMe = "Enter About Me";
     public String jsAddress;
-    public String jsLocation;
-    public String jsPhone;
-    public String password;
-    public String jsEduLevel;
-    public String jsSkills;
-    public String jsAboutMe;
-    public String jsJobXp;
+    public String jsEduLevel = "Enter Education Level";
     public String jsImageUrl;
-    public String jsOccupation;
+    public String jsJobXp = "Enter Job Experience";
+    public String jsLocation;
+    public String jsName;
+    public String jsOccupation = "Enter Occupation";
+    public String jsPhone;
+    public String jsSkills = "Enter Skills";
+    public String orgAddress;
+    public String orgImageUrl;
+    public String orgLocation;
+    public String orgName;
+    public String orgType;
+    public String password;
+    public String uid;
+    public String userType;
 
-    public List<String> savedJobs;
-    public List<String> appliedJobs;
-    public List<String> postedJobs;
     public String appliedFor;
     public String appliedForJobId;
 
-    public String userType;
-    public boolean isBlocked = false;
+    public boolean isApproved = false;
 
     public String getAddress() {
         if (jsAddress != null)
@@ -45,13 +42,12 @@ public class User {
     }
 
     public String getName() {
-        if (name != null)
-            return name;
-        else if (jsName != null)
+        if (jsName != null)
             return jsName;
         else if (empName != null)
             return empName;
         else
             return orgName;
     }
+
 }

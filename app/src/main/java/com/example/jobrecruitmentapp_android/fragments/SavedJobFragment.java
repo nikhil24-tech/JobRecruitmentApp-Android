@@ -22,7 +22,8 @@ public class SavedJobFragment extends Fragment {
     private FragmentSavedJobBinding binding;
     private UserViewModel viewModel;
 
-    public SavedJobFragment() {}
+    public SavedJobFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class SavedJobFragment extends Fragment {
 
         NavController navController = Navigation.findNavController(requireView());
         viewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        JobRecyclerViewAdapter adapter = new JobRecyclerViewAdapter(navController, viewModel::setSelectedJob, JobRecyclerViewAdapter.Mode.SAVED);
+        JobRecyclerViewAdapter adapter = new JobRecyclerViewAdapter(navController, viewModel, JobRecyclerViewAdapter.Mode.SAVED);
         viewModel
                 .getSavedJobs()
                 .observe(getViewLifecycleOwner(), adapter::submitList);

@@ -1,6 +1,10 @@
 package com.example.jobrecruitmentapp_android.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,11 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.jobrecruitmentapp_android.R;
 import com.example.jobrecruitmentapp_android.databinding.FragmentUpdateProfileBinding;
@@ -28,7 +27,8 @@ public class UpdateProfileFragment extends Fragment {
 
     FragmentUpdateProfileBinding binding;
 
-    public UpdateProfileFragment() {}
+    public UpdateProfileFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
