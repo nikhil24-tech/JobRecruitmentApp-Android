@@ -12,6 +12,8 @@
         <entry key="app/src/main/res/layout/activity_signup_options.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layout/activity_user_type.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_add_job.xml" value="0.18614130434782608" />
+        <entry key="app/src/main/res/layout/fragment_job_detail.xml" value="0.1" />
       </map>
     </option>
   </component>

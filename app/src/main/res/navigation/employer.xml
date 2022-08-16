@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_employerJobDetailFragment_to_addJobFragment"
             app:destination="@id/addJobFragment" />
+        <action
+            android:id="@+id/action_employerJobDetailFragment_to_editJobFragment"
+            app:destination="@id/editJobFragment" />
     </fragment>
     <fragment
         android:id="@+id/employer_navigation_job_modify"
@@ -83,6 +86,14 @@
         <action
             android:id="@+id/action_candidateDetailsFragment2_to_employer_navigation_candidates"
             app:destination="@id/employer_navigation_candidates" />
+    </fragment>
+    <fragment
+        android:id="@+id/editJobFragment"
+        android:name="com.example.jobrecruitmentapp_android.fragments.EditJobFragment"
+        tools:layout="@layout/fragment_add_job" >
+        <action
+            android:id="@+id/action_editJobFragment_to_employerJobDetailFragment"
+            app:destination="@id/employerJobDetailFragment" />
     </fragment>
 
 
