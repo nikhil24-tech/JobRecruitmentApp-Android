@@ -23,7 +23,8 @@ public class JobSearchFragment extends Fragment {
     private FragmentJobSearchBinding binding;
     private UserViewModel viewModel;
 
-    public JobSearchFragment() {}
+    public JobSearchFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,12 +52,12 @@ public class JobSearchFragment extends Fragment {
             JobRecyclerViewAdapter.Mode mode;
             if (user.userType == null || user.userType.equalsIgnoreCase("jobseeker")) {
                 mode = JobRecyclerViewAdapter.Mode.SEARCH;
-            } else if (user.userType.equalsIgnoreCase("employer")){
+            } else if (user.userType.equalsIgnoreCase("employer")) {
                 mode = JobRecyclerViewAdapter.Mode.EMPLOYER_SEARCH;
             } else {
                 mode = JobRecyclerViewAdapter.Mode.ADMIN_SEARCH;
             }
-            JobRecyclerViewAdapter adapter = new JobRecyclerViewAdapter(navController, viewModel::setSelectedJob, mode);
+            JobRecyclerViewAdapter adapter = new JobRecyclerViewAdapter(navController, viewModel, mode);
             viewModel
                     .getSearchedJobs()
                     .observe(getViewLifecycleOwner(), adapter::submitList);
