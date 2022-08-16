@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,9 @@ import com.example.jobrecruitmentapp_android.adapters.CandidateRecyclerViewAdapt
 import com.example.jobrecruitmentapp_android.databinding.FragmentCandidateListBinding;
 import com.example.jobrecruitmentapp_android.viewmodels.UserViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class CandidateFragment extends Fragment {
 
@@ -24,7 +29,8 @@ public class CandidateFragment extends Fragment {
     private UserViewModel viewModel;
     private CandidateRecyclerViewAdapter adapter;
 
-    public CandidateFragment() {}
+    public CandidateFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,7 @@ public class CandidateFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
+
         NavController navController = Navigation.findNavController(requireView());
         viewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
             if (user == null) {
@@ -54,10 +61,31 @@ public class CandidateFragment extends Fragment {
                 viewModel
                         .getAppliedUsers()
                         .observe(getViewLifecycleOwner(), adapter::submitList);
+                binding.spinner.setVisibility(View.GONE);
             } else {
+                List<String> spinnerArray = new ArrayList<>();
+                spinnerArray.add("Jobseeker");
+                spinnerArray.add("Employer");
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(requireContext(),
+                        android.R.layout.simple_spinner_item, spinnerArray);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                binding.spinner.setAdapter(arrayAdapter);
+                binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        viewModel.setCurrentCandidateType(spinnerArray.get(position));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        viewModel.setCurrentCandidateType(null);
+                    }
+                });
+
                 adapter = new CandidateRecyclerViewAdapter(navController, viewModel::setSelectedUser, CandidateRecyclerViewAdapter.Mode.ADMIN);
                 viewModel
-                        .getAllUsers()
+                        .getCurrentCandidates()
                         .observe(getViewLifecycleOwner(), adapter::submitList);
             }
             binding.list.setAdapter(adapter);
