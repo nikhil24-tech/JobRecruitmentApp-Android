@@ -72,7 +72,7 @@ public class EmailLoginActivity extends AppCompatActivity {
                             FirebaseAuth.getInstance().signOut();
                         } else {
                             Class<?> destination;
-                            if (user.userType == null || user.userType.equalsIgnoreCase("jobseeker")) {
+                            if (user.userType.equalsIgnoreCase("jobseeker")) {
                                 destination = JobSeekerActivity.class;
                             } else if (user.userType.equalsIgnoreCase("employer")) {
                                 destination = EmployerActivity.class;
@@ -81,8 +81,13 @@ public class EmailLoginActivity extends AppCompatActivity {
                             } else {
                                 destination = JobSeekerActivity.class;
                             }
-                            Intent intent = new Intent(this, destination);
-                            startActivity(intent);
+                            if (user.userType.equalsIgnoreCase(getIntent().getStringExtra("userType"))) {
+                                startActivity(new Intent(this, destination));
+                            } else {
+                                Toast.makeText(this, "You are trying to log in as wrong user type.", Toast.LENGTH_SHORT).show();
+                                FirebaseAuth.getInstance().signOut();
+                                startActivity(new Intent(this, UserTypeActivity.class));
+                            }
                             finish();
                         }
                     } else {
