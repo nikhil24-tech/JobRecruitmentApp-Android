@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/DELL/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_item.xml" value="0.2" />
+        <entry key="..\:/Users/DELL/OneDrive/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/fragment_candidate_details.xml" value="0.2" />
+        <entry key="..\:/Users/DELL/OneDrive/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/fragment_candidate_list.xml" value="0.2" />
         <entry key="..\:/Users/DELL/OneDrive/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/fragment_edit_job_list.xml" value="0.2" />
+        <entry key="..\:/Users/DELL/OneDrive/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/fragment_modify_jobs.xml" value="0.2" />
+        <entry key="..\:/Users/DELL/OneDrive/Documents/GitHub/JobRecruitmentApp-Android/app/src/main/res/layout/item_candidate.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_admin.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_create_profile.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_email_login.xml" value="0.1" />
