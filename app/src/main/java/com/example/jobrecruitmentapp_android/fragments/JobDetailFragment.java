@@ -18,6 +18,7 @@ import com.example.jobrecruitmentapp_android.R;
 import com.example.jobrecruitmentapp_android.databinding.FragmentJobDetailBinding;
 import com.example.jobrecruitmentapp_android.models.AppliedJob;
 import com.example.jobrecruitmentapp_android.models.Job;
+import com.example.jobrecruitmentapp_android.models.SaveJob;
 import com.example.jobrecruitmentapp_android.models.User;
 import com.example.jobrecruitmentapp_android.viewmodels.UserViewModel;
 import com.google.firebase.firestore.CollectionReference;
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class JobDetailFragment extends Fragment {
 
@@ -98,7 +100,7 @@ public class JobDetailFragment extends Fragment {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         binding.itemSubtitle.setText(job.jobLocation);
         binding.jobName.setText(job.jobName);
-        binding.contact.setText(job.empEmail);
+        binding.contact.setText(job.empPhone);
         binding.requirements.setText(job.jobRequirements);
         binding.description.setText(job.jobDescription);
         binding.salary.setText(job.salaryPerHr);
@@ -106,6 +108,19 @@ public class JobDetailFragment extends Fragment {
         binding.textView13.setText(job.orgName + " - " + job.orgType);
 
         if (user.userType == null || user.userType.equalsIgnoreCase("jobseeker")) {
+            List<AppliedJob> approvedJobs = appliedJobs
+                    .stream()
+                    .filter(x -> x.jobID != null && x.jobID.equalsIgnoreCase(job.docID))
+                    .filter(x -> x.isApproved != null && x.isApproved)
+                    .collect(Collectors.toList());
+            if (approvedJobs.isEmpty()) {
+                binding.jobUnavailable.setVisibility(View.GONE);
+            } else if (approvedJobs.stream().anyMatch(x -> user.email.equalsIgnoreCase(x.jsEmail))) {
+                binding.jobUnavailable.setText("You have been approved for the job.");
+            } else {
+                binding.jobUnavailable.setText("This job is no longer available!");
+            }
+
             boolean alreadyApplied = appliedJobs
                     .stream()
                     .anyMatch(x -> x.jsEmail != null && x.jsEmail.equalsIgnoreCase(user.email) && x.jobID.equalsIgnoreCase(job.docID));
@@ -119,7 +134,7 @@ public class JobDetailFragment extends Fragment {
             boolean alreadySaved = job
                     .jsSavedAndApplied
                     .stream()
-                    .anyMatch(x -> x.jsEmail != null && x.jsEmail.equalsIgnoreCase(user.email));
+                    .anyMatch(x -> x.jsEmail != null && x.jsEmail.equalsIgnoreCase(user.email) && x.isSaved);
 
             if (alreadySaved) {
                 binding.saveJob.setText("Saved");
@@ -153,7 +168,10 @@ public class JobDetailFragment extends Fragment {
                 binding.applyJob.setVisibility(View.GONE);
                 binding.saveJob.setVisibility(View.GONE);
             }
+            binding.jobUnavailable.setVisibility(View.GONE);
         } else {
+            binding.jobUnavailable.setVisibility(View.GONE);
+
             CollectionReference collection = firestore.collection("jobs");
             DocumentReference document = collection.document(job.docID);
 
@@ -197,12 +215,7 @@ public class JobDetailFragment extends Fragment {
 
         map.put("uid", user.uid);
 
-        FirebaseFirestore
-                .getInstance()
-                .collection("appliedJobs")
-                .add(map)
-                .addOnSuccessListener(task ->  Toast.makeText(requireContext(), "Job applied!", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(task -> Toast.makeText(requireContext(), "Unable to apply job!", Toast.LENGTH_SHORT).show());
+        viewModel.applyJob(requireContext(), user.email, map, job);
     }
 
 }

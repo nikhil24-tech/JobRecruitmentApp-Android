@@ -56,12 +56,14 @@ public class EmailSignupActivity extends AppCompatActivity {
         String name = binding.nameTextField.getEditText().getText().toString();
         String phone = binding.phoneTextField.getEditText().getText().toString();
         String email = binding.emailTextField.getEditText().getText().toString();
+        String password = binding.passwordTextField.getEditText().getText().toString();
 
         Intent intent = new Intent(this, CreateProfileActivity.class);
         intent.putExtra("name", name);
         intent.putExtra("phone", phone);
         intent.putExtra("email", email);
         intent.putExtra("userType", getIntent().getStringExtra("userType"));
+        intent.putExtra("password", password);
 
         startActivity(intent);
         finish();

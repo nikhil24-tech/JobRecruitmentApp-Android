@@ -18,12 +18,23 @@
         android:layout_weight="0.05"
         />
 
+    <TextView
+        android:id="@+id/jobUnavailable"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:background="@color/browser_actions_bg_grey"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.05"
+        android:text="This job is no longer available!" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:cardCornerRadius="16dp"
         android:layout_marginTop="16dp"
-        android:layout_weight="0.95"
+        android:layout_weight="0.90"
         android:backgroundTint="#FFF2F1F1">
 
         <ScrollView
@@ -209,6 +220,5 @@
         </ScrollView>
 
     </androidx.cardview.widget.CardView>
-
 
 </LinearLayout>

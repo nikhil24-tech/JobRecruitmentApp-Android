@@ -30,9 +30,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
+            android:maxLines="3"
             android:text="Real Estate Team"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/saveJob"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/name" />
 
@@ -44,6 +47,8 @@
             android:layout_marginTop="4dp"
             android:text="Montreal, Canada"
             android:textColor="@color/textColor"
+            app:layout_constraintEnd_toEndOf="@+id/name"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/description" />
 
@@ -56,6 +61,8 @@
             android:layout_marginBottom="16dp"
             android:text="$20 - $25 an hour"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/name"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/location" />
 
@@ -63,10 +70,13 @@
             android:id="@+id/applyJob"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text="Apply Job"
             app:layout_constraintBottom_toTopOf="@+id/saveJob"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/name"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button

@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserViewModel extends ViewModel {
@@ -197,10 +198,22 @@ public class UserViewModel extends ViewModel {
     }
 
     public void saveJob(Context context, String email, Job job) {
+        Optional<SaveJob> existingJob = job
+                .jsSavedAndApplied
+                .stream()
+                .filter(x -> x.jsEmail.equalsIgnoreCase(email))
+                .findFirst();
+
         SaveJob saveJob = new SaveJob();
         saveJob.isSaved = true;
-        saveJob.isApplied = false;
         saveJob.jsEmail = email;
+        if (existingJob.isPresent()) {
+            job.jsSavedAndApplied.remove(existingJob.get());
+            saveJob.isApplied = existingJob.get().isApplied;
+        } else {
+            saveJob.isApplied = false;
+        }
+
         job.jsSavedAndApplied.add(saveJob);
 
         Map<String, Object> map = new HashMap<>();
@@ -215,12 +228,63 @@ public class UserViewModel extends ViewModel {
                 .addOnFailureListener(task -> Toast.makeText(context, "Unable to save job!", Toast.LENGTH_SHORT).show());
     }
 
-    public void unSaveJob(Context context, String email, Job job) {
+    public void applyJob(Context context, String email, Map<String, Object> map, Job job) {
+        FirebaseFirestore
+                .getInstance()
+                .collection("appliedJobs")
+                .add(map)
+                .addOnSuccessListener(task ->  applyJob2(context, email, job))
+                .addOnFailureListener(task -> Toast.makeText(context, "Unable to apply job!", Toast.LENGTH_SHORT).show());
+    }
+
+    void applyJob2(Context context, String email, Job job) {
+        Optional<SaveJob> existingJob = job
+                .jsSavedAndApplied
+                .stream()
+                .filter(x -> x.jsEmail.equalsIgnoreCase(email))
+                .findFirst();
+
         SaveJob saveJob = new SaveJob();
-        saveJob.isSaved = true;
-        saveJob.isApplied = false;
+        saveJob.isApplied = true;
         saveJob.jsEmail = email;
-        job.jsSavedAndApplied.removeIf(x -> x.jsEmail != null && x.jsEmail.equalsIgnoreCase(email));
+        if (existingJob.isPresent()) {
+            job.jsSavedAndApplied.remove(existingJob.get());
+            saveJob.isSaved = existingJob.get().isSaved;
+        } else {
+            saveJob.isSaved = false;
+        }
+
+        job.jsSavedAndApplied.add(saveJob);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("jsSavedAndApplied", job.jsSavedAndApplied);
+
+        FirebaseFirestore
+                .getInstance()
+                .collection("jobs")
+                .document(job.docID)
+                .update(map)
+                .addOnSuccessListener(task -> Toast.makeText(context, "Job applied!", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(task -> Toast.makeText(context, "Unable to applied job!", Toast.LENGTH_SHORT).show());
+    }
+
+    public void unSaveJob(Context context, String email, Job job) {
+        Optional<SaveJob> existingJob = job
+                .jsSavedAndApplied
+                .stream()
+                .filter(x -> x.jsEmail.equalsIgnoreCase(email))
+                .findFirst();
+
+        SaveJob saveJob = new SaveJob();
+        saveJob.jsEmail = email;
+        if (existingJob.isPresent()) {
+            job.jsSavedAndApplied.remove(existingJob.get());
+            saveJob.isApplied = existingJob.get().isApplied;
+        } else {
+            saveJob.isApplied = false;
+        }
+        saveJob.isSaved = false;
+        job.jsSavedAndApplied.add(saveJob);
 
         Map<String, Object> map = new HashMap<>();
         map.put("jsSavedAndApplied", job.jsSavedAndApplied);
