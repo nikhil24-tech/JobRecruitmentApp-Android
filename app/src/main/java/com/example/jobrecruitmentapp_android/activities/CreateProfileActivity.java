@@ -2,6 +2,7 @@ package com.example.jobrecruitmentapp_android.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
@@ -69,6 +70,7 @@ public class CreateProfileActivity extends AppCompatActivity {
             }
             try {
                 InputStream inputStream = getContentResolver().openInputStream(data.getData());
+                binding.imageView.setImageBitmap(BitmapFactory.decodeStream(inputStream));
                 String name = FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg";
 
                 FirebaseStorage storage = FirebaseStorage.getInstance();
