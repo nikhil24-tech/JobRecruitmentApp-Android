@@ -2,11 +2,10 @@ package com.example.jobrecruitmentapp_android.models;
 
 import com.google.firebase.firestore.DocumentId;
 
-public class AppliedJob {
-
+public class SavedJob {
     public String empEmail;
     public String empPhone;
-    public Boolean isApproved;
+    public Boolean isApproved = false;
     public String jobDescription;
     public String jobID;
     public String jobLocation;
@@ -60,4 +59,5 @@ public class AppliedJob {
         user.isApproved = isApproved != null && isApproved;
         return user;
     }
+
 }

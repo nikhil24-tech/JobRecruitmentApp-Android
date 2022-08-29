@@ -18,7 +18,6 @@ import com.example.jobrecruitmentapp_android.R;
 import com.example.jobrecruitmentapp_android.databinding.FragmentJobDetailBinding;
 import com.example.jobrecruitmentapp_android.models.AppliedJob;
 import com.example.jobrecruitmentapp_android.models.Job;
-import com.example.jobrecruitmentapp_android.models.SaveJob;
 import com.example.jobrecruitmentapp_android.models.User;
 import com.example.jobrecruitmentapp_android.viewmodels.UserViewModel;
 import com.google.firebase.firestore.CollectionReference;

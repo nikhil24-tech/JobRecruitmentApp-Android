@@ -7,12 +7,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
 import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jobrecruitmentapp_android.R;
 import com.example.jobrecruitmentapp_android.databinding.ItemJobBinding;
 import com.example.jobrecruitmentapp_android.models.Job;
+import com.example.jobrecruitmentapp_android.models.User;
 import com.example.jobrecruitmentapp_android.viewmodels.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -20,7 +22,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JobRecyclerViewAdapter extends RecyclerView.Adapter<JobRecyclerViewAdapter.ViewHolder> {
 
@@ -99,13 +103,40 @@ public class JobRecyclerViewAdapter extends RecyclerView.Adapter<JobRecyclerView
 
             holder.binding.saveJob.setOnClickListener(v -> {
                 if (mode == Mode.SAVED) {
-                    userViewModel.unSaveJob(holder.binding.getRoot().getContext(), email, holder.job);
+                    userViewModel.unSaveJob(holder.binding.getRoot().getContext(), email, holder.job.docID);
                 } else {
-                    userViewModel.saveJob(holder.binding.getRoot().getContext(), email, holder.job);
+                    Map<String, Object> map = getJobMap(userViewModel.getCurrentUser().getValue(), holder.job);
+                    userViewModel.saveJob(holder.binding.getRoot().getContext(), map);
                 }
             });
         }
 
+    }
+
+    Map<String, Object> getJobMap(User user, Job job) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("empEmail", job.empEmail);
+        map.put("empPhone", job.empPhone);
+        map.put("isApproved", false);
+        map.put("jobDescription", job.jobDescription);
+        map.put("jobID", job.docID);
+        map.put("jobLocation", job.jobLocation);
+        map.put("jobName", job.jobName);
+        map.put("jsAboutMe", user.jsAboutMe);
+        map.put("jsAddress", user.getAddress());
+        map.put("jsEmail", user.email);
+        map.put("jsExperience", user.jsJobXp);
+        map.put("jsImageUrl", user.jsImageUrl);
+        map.put("jsName", user.getName());
+        map.put("jsPhone", user.jsPhone);
+        map.put("jsSkills", user.jsSkills);
+        map.put("orgAddress", user.orgAddress);
+        map.put("orgType", job.orgType);
+        map.put("requirements", job.jobRequirements);
+        map.put("salaryPerHr", job.salaryPerHr);
+
+        map.put("uid", user.uid);
+        return map;
     }
 
     @Override

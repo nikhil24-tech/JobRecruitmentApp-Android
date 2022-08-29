@@ -18,8 +18,6 @@ public class Job {
     public String orgType;
     public String salaryPerHr;
 
-    public List<SaveJob> jsSavedAndApplied = new ArrayList<>();
-
     @DocumentId
     public String docID;
 }
