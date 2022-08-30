@@ -23,6 +23,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import uk.co.jakebreen.sendgridandroid.SendGrid;
+import uk.co.jakebreen.sendgridandroid.SendGridMail;
+import uk.co.jakebreen.sendgridandroid.SendTask;
+
 public class UserViewModel extends ViewModel {
     private final MutableLiveData<List<Job>> latestJobs;
     private final MutableLiveData<Job> selectedJob;
@@ -43,9 +47,12 @@ public class UserViewModel extends ViewModel {
 
     private final MediatorLiveData<List<User>> appliedUsers;
     private final MediatorLiveData<List<User>> currentCandidates;
+    private final SendGrid sendGrid;
+
+    private static final String apiKey = "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";
 
     public UserViewModel() {
-
+        sendGrid = SendGrid.create(apiKey);
 
         latestJobs = new MutableLiveData<>();
         selectedJob = new MutableLiveData<>();
@@ -229,6 +236,36 @@ public class UserViewModel extends ViewModel {
                 .addOnFailureListener(task -> Toast.makeText(context, "Unable to save job!", Toast.LENGTH_SHORT).show());
     }
 
+    public void applyJob(Context context, Map<String, Object> map) {
+        FirebaseFirestore
+                .getInstance()
+                .collection("appliedJobs")
+                .add(map)
+                .addOnSuccessListener(task -> {
+                    Toast.makeText(context, "Job applied!", Toast.LENGTH_SHORT).show();
+                    SendGridMail mail = new SendGridMail();
+                    mail.addRecipient((String) map.get("jsEmail"), (String) map.get("jsName"));
+                    mail.setFrom("jobkart7722@gmail.com", "JobKart");
+                    mail.setSubject("Job Application Received");
+                    mail.setContent(
+                            "Congratulations!, You have successfully applied for a job.\n" +
+                                    "Job Details: \n" +
+                                    "Title - " + map.get("jobName") + " \n"
+                    );
+                    SendTask sendTask = new SendTask(sendGrid, mail);
+                    try {
+                        boolean sendMail = sendTask.execute().get().isSuccessful();
+                        if (sendMail) {
+                            Toast.makeText(context, "Mail sent!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Unable to send confirmation email!", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                })
+                .addOnFailureListener(task -> Toast.makeText(context, "Unable to apply job!", Toast.LENGTH_SHORT).show());
+    }
 
     public void unSaveJob(Context context, String email, String docID) {
         List<SavedJob> jobs = getSavedJobs().getValue();

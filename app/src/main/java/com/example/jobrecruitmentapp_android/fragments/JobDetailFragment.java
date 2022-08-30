@@ -1,6 +1,10 @@
 package com.example.jobrecruitmentapp_android.fragments;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -18,8 +23,12 @@ import com.example.jobrecruitmentapp_android.R;
 import com.example.jobrecruitmentapp_android.databinding.FragmentJobDetailBinding;
 import com.example.jobrecruitmentapp_android.models.AppliedJob;
 import com.example.jobrecruitmentapp_android.models.Job;
+import com.example.jobrecruitmentapp_android.models.SavedJob;
 import com.example.jobrecruitmentapp_android.models.User;
 import com.example.jobrecruitmentapp_android.viewmodels.UserViewModel;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,8 +46,14 @@ public class JobDetailFragment extends Fragment {
     private User user;
     private Job job;
     private List<AppliedJob> appliedJobs;
+    private List<SavedJob> savedJobs;
+    private double lat = 0.0, lng = 0.0;
+    private FusedLocationProviderClient fusedLocationClient;
 
-    public JobDetailFragment() {}
+    private static final int PERMISSION_REQUEST_CODE = 100;
+
+    public JobDetailFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +75,7 @@ public class JobDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         navController = Navigation.findNavController(requireView());
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
         viewModel
                 .getCurrentUser()
@@ -90,10 +106,20 @@ public class JobDetailFragment extends Fragment {
                     this.appliedJobs = appliedJobs;
                     render();
                 });
+
+        viewModel
+                .getSavedJobs()
+                .observe(getViewLifecycleOwner(), savedJobs -> {
+                    if (savedJobs == null) {
+                        return;
+                    }
+                    this.savedJobs = savedJobs;
+                    render();
+                });
     }
 
     void render() {
-        if (user == null || job == null || appliedJobs == null) {
+        if (user == null || job == null || appliedJobs == null || savedJobs == null) {
             return;
         }
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -127,19 +153,18 @@ public class JobDetailFragment extends Fragment {
                 binding.applyJob.setText("Applied");
                 binding.applyJob.setEnabled(false);
             } else {
-                binding.applyJob.setOnClickListener(v -> applyJob(user, job));
+                binding.applyJob.setOnClickListener(v -> applyJob());
             }
 
-            boolean alreadySaved = job
-                    .jsSavedAndApplied
+            boolean alreadySaved = savedJobs
                     .stream()
-                    .anyMatch(x -> x.jsEmail != null && x.jsEmail.equalsIgnoreCase(user.email) && x.isSaved);
+                    .anyMatch(x -> x.jsEmail != null && x.jsEmail.equalsIgnoreCase(user.email) && x.jobID.equalsIgnoreCase(job.docID));
 
             if (alreadySaved) {
                 binding.saveJob.setText("Saved");
                 binding.saveJob.setEnabled(false);
             } else {
-                binding.saveJob.setOnClickListener(v -> viewModel.saveJob(requireContext(), user.email, job));
+                binding.saveJob.setOnClickListener(v -> saveJob(user, job));
             }
         } else if (user.userType.equalsIgnoreCase("employer")) {
             if (user.email.equalsIgnoreCase(job.empEmail)) {
@@ -190,7 +215,36 @@ public class JobDetailFragment extends Fragment {
         }
     }
 
-    void applyJob(User user, Job job) {
+    void applyJob() {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+        } else {
+            applyJob2();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    void applyJob2() {
+        fusedLocationClient
+                .getLastLocation()
+                .addOnSuccessListener(location -> {
+                    if (location != null) {
+                        lng = location.getLongitude();
+                        Map<String, Object> map = getJobMap(user, job);
+                        map.put("lat", location.getLatitude());
+                        map.put("lng", location.getLongitude());
+                        viewModel.applyJob(requireContext(), map);
+                    }
+                })
+                .addOnFailureListener(task -> Toast.makeText(requireContext(), "Unable to fetch location!", Toast.LENGTH_SHORT).show());
+    }
+
+    void saveJob(User user, Job job) {
+        viewModel.saveJob(requireContext(), getJobMap(user, job));
+    }
+
+    Map<String, Object> getJobMap(User user, Job job) {
         Map<String, Object> map = new HashMap<>();
         map.put("empEmail", job.empEmail);
         map.put("empPhone", job.empPhone);
@@ -213,8 +267,18 @@ public class JobDetailFragment extends Fragment {
         map.put("salaryPerHr", job.salaryPerHr);
 
         map.put("uid", user.uid);
+        return map;
+    }
 
-        viewModel.applyJob(requireContext(), user.email, map, job);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE
+                && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            applyJob2();
+        } else {
+            Toast.makeText(requireContext(), "Cannot apply without location!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
