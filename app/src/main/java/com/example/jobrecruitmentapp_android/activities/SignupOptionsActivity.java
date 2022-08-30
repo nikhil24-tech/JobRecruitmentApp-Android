@@ -18,6 +18,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -110,7 +111,7 @@ public class SignupOptionsActivity extends AppCompatActivity {
                             if (user.userType.equalsIgnoreCase(getIntent().getStringExtra("userType"))) {
                                 startActivity(new Intent(this, destination));
                             } else {
-                                Toast.makeText(this, "You are trying to log in a wrong user type.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "You are trying to log in as wrong user type.", Toast.LENGTH_SHORT).show();
                                 FirebaseAuth.getInstance().signOut();
                                 client.signOut();
                                 startActivity(new Intent(this, UserTypeActivity.class));
@@ -133,6 +134,10 @@ public class SignupOptionsActivity extends AppCompatActivity {
 
     void openCreateProfileActivity() {
         Intent intent = new Intent(this, CreateProfileActivity.class);
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        intent.putExtra("name", currentUser.getDisplayName());
+        intent.putExtra("phone", currentUser.getPhoneNumber());
+        intent.putExtra("email", currentUser.getEmail());
         intent.putExtra("userType", getIntent().getStringExtra("userType"));
         startActivity(intent);
         finish();

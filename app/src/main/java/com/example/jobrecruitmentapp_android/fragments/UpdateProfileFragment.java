@@ -1,6 +1,7 @@
 package com.example.jobrecruitmentapp_android.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,39 +48,101 @@ public class UpdateProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         UserViewModel viewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         viewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
-            binding.addressTextField.getEditText().setText(user.getAddress());
-            binding.emailTextField.getEditText().setText(user.email);
-            binding.orgNameTextField.getEditText().setText(user.getName());
-            binding.orgTypeTextField.getEditText().setText(user.orgType);
-            binding.phoneTextField.getEditText().setText(user.jsPhone);
+            binding.nameTextField.getEditText().setText(user.getName());
+
+            if (user.userType == null || user.userType.equalsIgnoreCase("jobseeker")) {
+                binding.nameTextField.getEditText().setText(user.jsName);
+                binding.emailTextField.getEditText().setText(user.email);
+                binding.phoneTextField.getEditText().setText(user.jsPhone);
+                binding.addressTextField.getEditText().setText(user.jsAddress);
+
+                binding.orgNameTextField.setVisibility(View.GONE);
+                binding.orgTypeTextField.setVisibility(View.GONE);
+
+                binding.jsOccupationTextField.getEditText().setText(user.jsOccupation);
+                binding.jsJobXpTextField.getEditText().setText(user.jsJobXp);
+                binding.jsSkillsTextField.getEditText().setText(user.jsSkills);
+                binding.jsAboutMeTextField.getEditText().setText(user.jsAboutMe);
+                binding.jsEduLevelTextField.getEditText().setText(user.jsEduLevel);
+
+            } else {
+                binding.nameTextField.getEditText().setText(user.empName);
+                binding.emailTextField.getEditText().setText(user.email);
+                binding.phoneTextField.getEditText().setText(user.empPhone);
+                binding.addressTextField.getEditText().setText(user.orgAddress);
+
+                binding.orgTypeTextField.getEditText().setText(user.orgType);
+                binding.orgNameTextField.getEditText().setText(user.orgName);
+
+                binding.jsOccupationTextField.setVisibility(View.GONE);
+                binding.jsSkillsTextField.setVisibility(View.GONE);
+                binding.jsEduLevelTextField.setVisibility(View.GONE);
+                binding.jsJobXpTextField.setVisibility(View.GONE);
+                binding.jsAboutMeTextField.setVisibility(View.GONE);
+            }
             binding.updateProfile.setOnClickListener(v -> updateProfile(user));
         });
-
     }
 
     void updateProfile(User user) {
-        NavController navController = Navigation.findNavController(requireView());
+        Editable editable;
 
-        String orgName = binding.orgNameTextField.getEditText().getText().toString();
-        String phone = binding.phoneTextField.getEditText().getText().toString();
-        String email = binding.emailTextField.getEditText().getText().toString();
-        String address = binding.addressTextField.getEditText().getText().toString();
-        String orgType = binding.orgTypeTextField.getEditText().getText().toString();
+        editable = binding.nameTextField.getEditText().getText();
+        String name = (editable != null) ? editable.toString() : "Enter name";
+
+        editable = binding.phoneTextField.getEditText().getText();
+        String phone = (editable != null) ? editable.toString() : "Enter phone number";
+
+        editable = binding.emailTextField.getEditText().getText();
+        String email = (editable != null) ? editable.toString() : "Enter email";
+
+        editable = binding.addressTextField.getEditText().getText();
+        String address = (editable != null) ? editable.toString() : "Enter address";
+
+        editable = binding.orgNameTextField.getEditText().getText();
+        String orgName = (editable != null) ? editable.toString() : "Enter organisation name";
+
+        editable = binding.orgTypeTextField.getEditText().getText();
+        String orgType = (editable != null) ? editable.toString() : "Enter organisation type";
+
+        editable = binding.jsEduLevelTextField.getEditText().getText();
+        String jsEduLevel = (editable != null) ? editable.toString() : "Enter education level";
+
+        editable = binding.jsJobXpTextField.getEditText().getText();
+        String jsJobXp = (editable != null) ? editable.toString() : "Enter job experience";
+
+        editable = binding.jsOccupationTextField.getEditText().getText();
+        String jsOccupation = (editable != null) ? editable.toString() : "Enter occupation";
+
+        editable = binding.jsSkillsTextField.getEditText().getText();
+        String jsSkills = (editable != null) ? editable.toString() : "Enter skills";
+
+        editable = binding.jsAboutMeTextField.getEditText().getText();
+        String jsAboutMe = (editable != null) ? editable.toString() : "Enter about me";
 
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         Map<String, Object> map = new HashMap<>();
-        map.put("name", orgName);
-        map.put("jsName", orgName);
-        map.put("empName", orgName);
-        map.put("orgType", orgType);
-        map.put("jsPhone", phone);
-        map.put("empPhone", phone);
         map.put("email", email);
+        map.put("empName", name);
+        map.put("empPhone", phone);
+        map.put("isBlocked", false);
+        map.put("jsAboutMe", jsAboutMe);
         map.put("jsAddress", address);
+        map.put("jsEduLevel", jsEduLevel);
+        map.put("jsJobXp", jsJobXp);
         map.put("jsLocation", address);
+        map.put("jsName", name);
+        map.put("jsOccupation", jsOccupation);
+        map.put("jsPhone", phone);
+        map.put("jsSkills", jsSkills);
         map.put("orgAddress", address);
+        map.put("orgLocation", address);
+        map.put("orgName", orgName);
+        map.put("orgType", orgType);
+        map.put("uid", id);
 
+        NavController navController = Navigation.findNavController(requireView());
         int action;
         if (user.userType == null || user.userType.equalsIgnoreCase("jobseeker")) {
             action = R.id.action_updateProfileFragment3_to_navigation_profile;

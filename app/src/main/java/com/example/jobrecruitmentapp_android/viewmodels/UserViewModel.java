@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.jobrecruitmentapp_android.models.AppliedJob;
 import com.example.jobrecruitmentapp_android.models.Job;
-import com.example.jobrecruitmentapp_android.models.SaveJob;
+import com.example.jobrecruitmentapp_android.models.SavedJob;
 import com.example.jobrecruitmentapp_android.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -23,13 +23,21 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import uk.co.jakebreen.sendgridandroid.SendGrid;
+import uk.co.jakebreen.sendgridandroid.SendGridMail;
+import uk.co.jakebreen.sendgridandroid.SendTask;
+
 public class UserViewModel extends ViewModel {
     private final MutableLiveData<List<Job>> latestJobs;
     private final MutableLiveData<Job> selectedJob;
     private final MutableLiveData<User> currentUser;
-    private final MediatorLiveData<List<Job>> savedJobs;
+
+    private final MutableLiveData<List<SavedJob>> savedJobs;
+    private final MediatorLiveData<List<Job>> userSavedJobs;
+
     private final MutableLiveData<List<AppliedJob>> appliedJobs;
     private final MediatorLiveData<List<Job>> userAppliedJobs;
+
     private final MutableLiveData<String> searchQuery;
     private final MediatorLiveData<List<Job>> searchedJobs;
     private final MutableLiveData<User> selectedUser;
@@ -39,8 +47,13 @@ public class UserViewModel extends ViewModel {
 
     private final MediatorLiveData<List<User>> appliedUsers;
     private final MediatorLiveData<List<User>> currentCandidates;
+    private final SendGrid sendGrid;
+
+    private static final String apiKey = "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";
 
     public UserViewModel() {
+        sendGrid = SendGrid.create(apiKey);
+
         latestJobs = new MutableLiveData<>();
         selectedJob = new MutableLiveData<>();
         currentUser = new MutableLiveData<>();
@@ -49,10 +62,7 @@ public class UserViewModel extends ViewModel {
         allUsers = new MutableLiveData<>();
         currentCandidateType = new MutableLiveData<>();
 
-        savedJobs = new MediatorLiveData<>();
-        savedJobs.addSource(latestJobs, jobs -> updateSavedJobs(jobs, getCurrentUser().getValue()));
-        savedJobs.addSource(currentUser, user -> updateSavedJobs(getLatestJobs().getValue(), user));
-
+        savedJobs = new MutableLiveData<>();
         appliedJobs = new MutableLiveData<>();
 
         searchedJobs = new MediatorLiveData<>();
@@ -70,6 +80,10 @@ public class UserViewModel extends ViewModel {
         userAppliedJobs = new MediatorLiveData<>();
         userAppliedJobs.addSource(getAppliedJobs(), jobs -> updateUserAppliedJobs(getCurrentUser().getValue(), jobs));
         userAppliedJobs.addSource(getCurrentUser(), user -> updateUserAppliedJobs(user, getAppliedJobs().getValue()));
+
+        userSavedJobs = new MediatorLiveData<>();
+        userSavedJobs.addSource(getSavedJobs(), jobs -> updateUserSavedJobs(getCurrentUser().getValue(), jobs));
+        userSavedJobs.addSource(getCurrentUser(), user -> updateUserSavedJobs(user, getSavedJobs().getValue()));
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -126,6 +140,23 @@ public class UserViewModel extends ViewModel {
                     }
                     appliedJobs.setValue(allJobs);
                 });
+        firestore
+                .collection("savedJobs")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        savedJobs.setValue(task.getResult().toObjects(SavedJob.class));
+                    }
+                });
+        firestore
+                .collection("savedJobs")
+                .addSnapshotListener((documentSnapshots, exception) -> {
+                    List<SavedJob> allJobs = new ArrayList<>();
+                    for (DocumentSnapshot document : documentSnapshots.getDocuments()) {
+                        allJobs.add(document.toObject(SavedJob.class));
+                    }
+                    savedJobs.setValue(allJobs);
+                });
     }
 
     private void updateUserAppliedJobs(User user, List<AppliedJob> jobs) {
@@ -143,6 +174,20 @@ public class UserViewModel extends ViewModel {
 
     }
 
+    private void updateUserSavedJobs(User user, List<SavedJob> jobs) {
+        if (user == null || jobs == null || jobs.isEmpty()) {
+            userSavedJobs.setValue(new ArrayList<>());
+            return;
+        }
+        List<Job> userJobs = new ArrayList<>();
+        for (SavedJob savedJob : jobs) {
+            if (savedJob.jsEmail != null && savedJob.jsEmail.equalsIgnoreCase(user.email)) {
+                userJobs.add(savedJob.toJob());
+            }
+        }
+        userSavedJobs.setValue(userJobs);
+    }
+
     private void updateSearchedJobs(List<Job> jobs, String query) {
         if (query == null || query.isEmpty()) {
             searchedJobs.setValue(jobs);
@@ -153,21 +198,6 @@ public class UserViewModel extends ViewModel {
                 .filter(job -> job.jobName.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT)))
                 .collect(Collectors.toList());
         searchedJobs.setValue(filteredJobs);
-    }
-
-    private void updateSavedJobs(List<Job> jobs, User user) {
-        if (jobs != null && user != null) {
-            List<Job> newSavedJobs = new ArrayList<>();
-            for (Job job : jobs) {
-                for (SaveJob saveJob: job.jsSavedAndApplied) {
-                    if (saveJob.isSaved && saveJob.jsEmail.equalsIgnoreCase(user.email)) {
-                        newSavedJobs.add(job);
-                        break;
-                    }
-                }
-            }
-            savedJobs.setValue(newSavedJobs);
-        }
     }
 
     private void updateAppliedUsers(User employer, List<AppliedJob> appliedJobs) {
@@ -197,105 +227,64 @@ public class UserViewModel extends ViewModel {
         }
     }
 
-    public void saveJob(Context context, String email, Job job) {
-        Optional<SaveJob> existingJob = job
-                .jsSavedAndApplied
-                .stream()
-                .filter(x -> x.jsEmail.equalsIgnoreCase(email))
-                .findFirst();
-
-        SaveJob saveJob = new SaveJob();
-        saveJob.isSaved = true;
-        saveJob.jsEmail = email;
-        if (existingJob.isPresent()) {
-            job.jsSavedAndApplied.remove(existingJob.get());
-            saveJob.isApplied = existingJob.get().isApplied;
-        } else {
-            saveJob.isApplied = false;
-        }
-
-        job.jsSavedAndApplied.add(saveJob);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("jsSavedAndApplied", job.jsSavedAndApplied);
-
+    public void saveJob(Context context, Map<String, Object> map) {
         FirebaseFirestore
                 .getInstance()
-                .collection("jobs")
-                .document(job.docID)
-                .update(map)
+                .collection("savedJobs")
+                .add(map)
                 .addOnSuccessListener(task -> Toast.makeText(context, "Job saved!", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(task -> Toast.makeText(context, "Unable to save job!", Toast.LENGTH_SHORT).show());
     }
 
-    public void applyJob(Context context, String email, Map<String, Object> map, Job job) {
+    public void applyJob(Context context, Map<String, Object> map) {
         FirebaseFirestore
                 .getInstance()
                 .collection("appliedJobs")
                 .add(map)
-                .addOnSuccessListener(task ->  applyJob2(context, email, job))
+                .addOnSuccessListener(task -> {
+                    Toast.makeText(context, "Job applied!", Toast.LENGTH_SHORT).show();
+                    SendGridMail mail = new SendGridMail();
+                    mail.addRecipient((String) map.get("jsEmail"), (String) map.get("jsName"));
+                    mail.setFrom("jobkart7722@gmail.com", "JobKart");
+                    mail.setSubject("Job Application Received");
+                    mail.setContent(
+                            "Congratulations!, You have successfully applied for a job.\n" +
+                                    "Job Details: \n" +
+                                    "Title - " + map.get("jobName") + " \n"
+                    );
+                    SendTask sendTask = new SendTask(sendGrid, mail);
+                    try {
+                        boolean sendMail = sendTask.execute().get().isSuccessful();
+                        if (sendMail) {
+                            Toast.makeText(context, "Mail sent!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Unable to send confirmation email!", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                })
                 .addOnFailureListener(task -> Toast.makeText(context, "Unable to apply job!", Toast.LENGTH_SHORT).show());
     }
 
-    void applyJob2(Context context, String email, Job job) {
-        Optional<SaveJob> existingJob = job
-                .jsSavedAndApplied
+    public void unSaveJob(Context context, String email, String docID) {
+        List<SavedJob> jobs = getSavedJobs().getValue();
+        Optional<SavedJob> savedJob = jobs
                 .stream()
-                .filter(x -> x.jsEmail.equalsIgnoreCase(email))
+                .filter(x -> x.jsEmail != null && x.jsEmail.equalsIgnoreCase(email) && x.jobID != null && x.jobID.equalsIgnoreCase(docID))
                 .findFirst();
 
-        SaveJob saveJob = new SaveJob();
-        saveJob.isApplied = true;
-        saveJob.jsEmail = email;
-        if (existingJob.isPresent()) {
-            job.jsSavedAndApplied.remove(existingJob.get());
-            saveJob.isSaved = existingJob.get().isSaved;
+        if (savedJob.isPresent()) {
+            FirebaseFirestore
+                    .getInstance()
+                    .collection("savedJobs")
+                    .document(savedJob.get().docID)
+                    .delete()
+                    .addOnSuccessListener(task -> Toast.makeText(context, "Job unsaved!", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(task -> Toast.makeText(context, "Unable to unsave job!", Toast.LENGTH_SHORT).show());
         } else {
-            saveJob.isSaved = false;
+            Toast.makeText(context, "Unable to unsave job!", Toast.LENGTH_SHORT).show();
         }
-
-        job.jsSavedAndApplied.add(saveJob);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("jsSavedAndApplied", job.jsSavedAndApplied);
-
-        FirebaseFirestore
-                .getInstance()
-                .collection("jobs")
-                .document(job.docID)
-                .update(map)
-                .addOnSuccessListener(task -> Toast.makeText(context, "Job applied!", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(task -> Toast.makeText(context, "Unable to applied job!", Toast.LENGTH_SHORT).show());
-    }
-
-    public void unSaveJob(Context context, String email, Job job) {
-        Optional<SaveJob> existingJob = job
-                .jsSavedAndApplied
-                .stream()
-                .filter(x -> x.jsEmail.equalsIgnoreCase(email))
-                .findFirst();
-
-        SaveJob saveJob = new SaveJob();
-        saveJob.jsEmail = email;
-        if (existingJob.isPresent()) {
-            job.jsSavedAndApplied.remove(existingJob.get());
-            saveJob.isApplied = existingJob.get().isApplied;
-        } else {
-            saveJob.isApplied = false;
-        }
-        saveJob.isSaved = false;
-        job.jsSavedAndApplied.add(saveJob);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("jsSavedAndApplied", job.jsSavedAndApplied);
-
-        FirebaseFirestore
-                .getInstance()
-                .collection("jobs")
-                .document(job.docID)
-                .update(map)
-                .addOnSuccessListener(task -> Toast.makeText(context, "Job unsaved!", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(task -> Toast.makeText(context, "Unable to unsave job!", Toast.LENGTH_SHORT).show());
 
     }
 
@@ -319,7 +308,7 @@ public class UserViewModel extends ViewModel {
         return currentUser;
     }
 
-    public MediatorLiveData<List<Job>> getSavedJobs() {
+    public MutableLiveData<List<SavedJob>> getSavedJobs() {
         return savedJobs;
     }
 
@@ -369,5 +358,9 @@ public class UserViewModel extends ViewModel {
 
     public MediatorLiveData<List<Job>> getUserAppliedJobs() {
         return userAppliedJobs;
+    }
+
+    public MediatorLiveData<List<Job>> getUserSavedJobs() {
+        return userSavedJobs;
     }
 }

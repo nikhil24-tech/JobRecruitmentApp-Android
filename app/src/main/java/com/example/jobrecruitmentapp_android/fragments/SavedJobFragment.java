@@ -46,7 +46,7 @@ public class SavedJobFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         JobRecyclerViewAdapter adapter = new JobRecyclerViewAdapter(navController, viewModel, JobRecyclerViewAdapter.Mode.SAVED);
         viewModel
-                .getSavedJobs()
+                .getUserSavedJobs()
                 .observe(getViewLifecycleOwner(), adapter::submitList);
         binding.list.setAdapter(adapter);
     }

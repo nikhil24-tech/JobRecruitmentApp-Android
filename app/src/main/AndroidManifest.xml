@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.jobrecruitmentapp_android">
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -14,35 +15,35 @@
         android:theme="@style/Theme.JobRecruitmentAppAndroid"
         tools:targetApi="31">
         <activity
-            android:name=".activities.AdminActivity"
+            android:name="com.example.jobrecruitmentapp_android.activities.AdminActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.EmployerActivity"
+            android:name="com.example.jobrecruitmentapp_android.activities.EmployerActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.CreateProfileActivity"
+            android:name="com.example.jobrecruitmentapp_android.activities.CreateProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.JobSeekerActivity"
+            android:name="com.example.jobrecruitmentapp_android.activities.JobSeekerActivity"
             android:exported="false"
             android:label="@string/title_activity_main2" />
         <activity
-            android:name=".activities.EmailLoginActivity"
+            android:name="com.example.jobrecruitmentapp_android.activities.EmailLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.EmailSignupActivity"
+            android:name="com.example.jobrecruitmentapp_android.activities.EmailSignupActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SignupOptionsActivity"
+            android:name="com.example.jobrecruitmentapp_android.activities.SignupOptionsActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.UserTypeActivity"
+            android:name="com.example.jobrecruitmentapp_android.activities.UserTypeActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.example.jobrecruitmentapp_android.activities.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SplashActivity"
+            android:name="com.example.jobrecruitmentapp_android.activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

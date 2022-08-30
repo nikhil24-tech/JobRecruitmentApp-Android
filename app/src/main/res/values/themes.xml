@@ -13,13 +13,11 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-
     <style name="CustomTitleAppearance" parent="@style/TextAppearance.Material3.HeadlineLarge">
         <item name="fontFamily">@font/jockey_one</item>
     </style>
-
-    <style name="ThemeOverlay.JobRecruitmentAppAndroid.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
-        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    <style name="circularImageStyle" >
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 </resources>
